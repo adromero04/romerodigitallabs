@@ -1,4 +1,4 @@
-name: Deploy to Hostinger (SFTP)
+name: Deploy to Hostinger (FTPS)
 
 on:
   push:
@@ -11,31 +11,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # -----------------------------
-      # If you have a build step (React/Vite/etc), UNCOMMENT this section
-      # and set the upload "localDir" to your build output (usually dist)
-      # -----------------------------
-      # - name: Setup Node
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: "20"
-      #
-      # - name: Install deps
-      #   run: npm ci
-      #
-      # - name: Build
-      #   run: npm run build
-
-      - name: Upload via SFTP
-        uses: pressidium/lftp-mirror-action@v1
+      - name: Deploy via FTPS to Hostinger
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: ${{ secrets.SFTP_HOST }}
-          port: ${{ secrets.SFTP_PORT }}
-          user: ${{ secrets.SFTP_USER }}
-          pass: ${{ secrets.SFTP_PASS }}
-          remoteDir: ${{ secrets.SFTP_REMOTE_PATH }}
-          # For a plain HTML site (repo contains the deploy-ready files), keep "."
-          # For React/Vite, change "." to "dist" after enabling the build steps above.
-          localDir: "."
-          # Avoid uploading git + workflow files
-          ignoreFile: ".lftpignore"
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          port: ${{ secrets.FTP_PORT }}
+          protocol: ftps
+          local-dir: ./
+          server-dir: /public_html/
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            **/.DS_Store
+            README.md
