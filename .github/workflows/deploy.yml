@@ -36,6 +36,6 @@ jobs:
           remoteDir: ${{ secrets.SFTP_REMOTE_PATH }}
           # For a plain HTML site (repo contains the deploy-ready files), keep "."
           # For React/Vite, change "." to "dist" after enabling the build steps above.
-          localDir: "."
+          localDir: "dist"
           # Avoid uploading git + workflow files
           ignoreFile: ".lftpignore"
