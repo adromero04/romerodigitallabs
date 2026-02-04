@@ -11,7 +11,25 @@ export default function LandingPage() {
   const [successMessage, setSuccessMessage] = useState('')
   const navigate = useNavigate()
 
-  function handleLocalContinue() {
+  async function handleLocalContinue() {
+    // Clear ALL existing data for a fresh start
+    const { db } = await import('../lib/db')
+    const { ensureCategories } = await import('../lib/seed')
+    
+    // Clear all tables
+    await db.bills.clear()
+    await db.transactions.clear()
+    await db.debts.clear()
+    await db.subscriptions.clear()
+    await db.categories.clear()
+    await db.accounts.clear()
+    await db.bill_payments.clear()
+    await db.subscription_payments.clear()
+    await db.debt_payments.clear()
+    
+    // Ensure only the required categories exist (no seed data)
+    await ensureCategories()
+    
     // Log in as local user
     localStorage.setItem('moneydash_auth', JSON.stringify({
       authenticated: true,
@@ -149,7 +167,7 @@ export default function LandingPage() {
       }}>
         <div className="brand">
           <img 
-            src="/monedash-logo.png" 
+            src={`${import.meta.env.BASE_URL || '/'}moneydash-logo.png`}
             alt="MoneyDash" 
             style={{ height: '50px', width: 'auto' }}
           />
@@ -192,7 +210,7 @@ export default function LandingPage() {
       }}>
         <div className="brand">
           <img 
-            src="/monedash-logo.png" 
+            src={`${import.meta.env.BASE_URL || '/'}moneydash-logo.png`}
             alt="MoneyDash" 
             style={{ height: '50px', width: 'auto' }}
           />
@@ -257,7 +275,7 @@ export default function LandingPage() {
           </h1>
           <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
             <img
-              src="/banner-graphic.png"
+              src={`${import.meta.env.BASE_URL}banner-graphic.png`}
               alt="MoneyDash Graphic"
               style={{
                 width: '100%',

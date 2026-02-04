@@ -160,6 +160,11 @@ select option{
     padding:16px 14px;
     min-height:48px;
   }
+  
+  /* Reduce modal height on mobile to avoid bottom nav overlap */
+  .bill-modal {
+    max-height: 65vh !important;
+  }
 }
 label{font-size:12px;color:var(--muted);display:block;margin:10px 0 6px}
 hr{border:none;border-top:1px solid rgba(34,49,84,.8);margin:14px 0}
@@ -448,23 +453,29 @@ small{color:var(--muted)}
 
 .calendar-weekday {
   text-align: center;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--muted);
-  padding: 8px 4px;
+  padding: 6px 2px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .calendar-day {
-  min-height: 80px;
+  min-height: 70px;
   border: 1px solid rgba(34,49,84,.5);
-  border-radius: 8px;
-  padding: 6px;
+  border-radius: 6px;
+  padding: 5px;
   background: rgba(18,27,46,.3);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
+  transition: all 0.2s ease;
+}
+
+.calendar-day-clickable:hover {
+  background: rgba(0,198,182,.1);
+  border-color: rgba(0,198,182,.5);
 }
 
 .calendar-day-other {
@@ -533,27 +544,63 @@ small{color:var(--muted)}
   padding: 2px 5px;
 }
 
+.calendar-dots {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 0;
+}
+
+.calendar-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 4px rgba(0,198,182,.5);
+}
+
+.calendar-dot-more {
+  font-size: 8px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
 @media (max-width: 860px) {
+  .calendar-grid {
+    gap: 2px;
+  }
+
+  .calendar-weekday {
+    font-size: 9px;
+    padding: 4px 2px;
+    font-weight: 600;
+  }
+
   .calendar-day {
     min-height: 60px;
     padding: 4px;
+    gap: 2px;
   }
   
   .calendar-day-number {
-    font-size: 11px;
+    font-size: 10px;
+    margin-bottom: 2px;
   }
   
-  .calendar-bill-item {
-    padding: 2px 4px;
-    font-size: 9px;
+  .calendar-dots {
+    gap: 3px;
+    padding: 2px 0;
   }
-  
-  .calendar-bill-name {
-    font-size: 9px;
+
+  .calendar-dot {
+    width: 5px;
+    height: 5px;
   }
-  
-  .calendar-bill-amount {
-    font-size: 8px;
+
+  .calendar-dot-more {
+    font-size: 7px;
   }
 
   /* Subscriptions page - move Add button to right on mobile */
@@ -617,5 +664,17 @@ small{color:var(--muted)}
 
   .landing-auth-desktop {
     display: block !important;
+  }
+}
+
+/* Payment Impact Modal Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.2);
   }
 }

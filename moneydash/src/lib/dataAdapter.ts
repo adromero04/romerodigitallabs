@@ -174,6 +174,15 @@ export async function listCategoriesByType(type: 'expense' | 'income'): Promise<
   return db.categories.where('type').equals(type).sortBy('name')
 }
 
+export async function upsertCategory(category: Omit<Category, 'id'> & { id?: string }): Promise<string> {
+  if (await shouldUseSupabase()) {
+    return supabaseAdapter.upsertCategory(category)
+  }
+  const id = category.id ?? uid()
+  await db.categories.put({ ...category, id })
+  return id
+}
+
 // ---- Subscriptions ----
 export async function listSubscriptions(): Promise<Subscription[]> {
   if (await shouldUseSupabase()) {

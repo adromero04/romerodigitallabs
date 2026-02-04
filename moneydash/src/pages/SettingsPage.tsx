@@ -349,7 +349,7 @@ export default function SettingsPage() {
               }
               
               // Force a hard reload with a query parameter to bypass cache
-              window.location.href = '/?logout=' + Date.now()
+              window.location.href = '/moneydash/?logout=' + Date.now()
             }
           }}>
             Log Out

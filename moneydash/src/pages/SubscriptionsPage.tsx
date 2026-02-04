@@ -26,6 +26,7 @@ export default function SubscriptionsPage() {
       name: '',
       amount: 0,
       due_day: 1,
+      due_month: 1,
       frequency: 'monthly',
       is_active: true,
       auto_pay: false,
@@ -77,7 +78,12 @@ export default function SubscriptionsPage() {
               </div>
               
               <div className="row" style={{ gap: 12, flexWrap: 'wrap', marginBottom: 12 }}>
-                <span className="pill">Due: Day {s.due_day}</span>
+                <span className="pill">
+                  Due: {s.frequency === 'monthly' 
+                    ? `Day ${s.due_day}` 
+                    : `${new Date(2000, (s.due_month || 1) - 1, s.due_day).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+                  }
+                </span>
                 <span className="pill">{formatFrequency(s.frequency)}</span>
               </div>
 
@@ -122,18 +128,25 @@ export default function SubscriptionsPage() {
               transform: 'translate(-50%, -50%)',
               width: '90%',
               maxWidth: '600px',
-              maxHeight: '90vh',
+              maxHeight: '80vh',
               background: 'var(--bg)',
               border: '1px solid rgba(34,49,84,.8)',
               borderRadius: '18px',
-              padding: '20px',
               zIndex: 201,
-              overflowY: 'auto',
               boxShadow: '0 10px 40px rgba(0,0,0,.5)',
+              display: 'flex',
+              flexDirection: 'column',
             }}
             aria-label="Subscription editor"
           >
-            <div className="row" style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+            {/* Fixed Header */}
+            <div className="row" style={{ 
+              justifyContent: 'space-between', 
+              alignItems: 'center', 
+              padding: '20px',
+              borderBottom: '1px solid rgba(34,49,84,.5)',
+              flexShrink: 0
+            }}>
               <div style={{ fontWeight: 900, fontSize: 20 }}>
                 {editingSub.id && subscriptions.find(s => s.id === editingSub.id) ? 'Edit subscription' : 'Add subscription'}
               </div>
@@ -160,88 +173,119 @@ export default function SubscriptionsPage() {
               </button>
             </div>
 
-            <div className="grid" style={{ gap: 14 }}>
-              <div>
-                <label>Name</label>
-                <input value={editingSub.name} onChange={e => setEditingSub({ ...editingSub, name: e.target.value })} placeholder="e.g., Netflix" />
-              </div>
-
-              <div className="grid" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
+            {/* Scrollable Body */}
+            <div style={{ 
+              padding: '20px', 
+              overflowY: 'auto', 
+              flex: 1,
+              minHeight: 0
+            }}>
+              <div className="grid" style={{ gap: 14 }}>
                 <div>
-                  <label>Amount</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    inputMode="decimal"
-                    value={editingSub.amount || ''}
-                    onChange={e => {
-                      const val = e.target.value
-                      setEditingSub({ ...editingSub, amount: val === '' ? 0 : parseFloat(val) || 0 })
-                    }}
-                  />
+                  <label>Name</label>
+                  <input value={editingSub.name} onChange={e => setEditingSub({ ...editingSub, name: e.target.value })} placeholder="e.g., Netflix" />
                 </div>
-                <div>
-                  <label>Due day (1-31)</label>
-                  <input
-                    type="number"
-                    min="1"
-                    max="31"
-                    inputMode="numeric"
-                    placeholder="1"
-                    value={editingSub.due_day === 0 ? '' : (editingSub.due_day || '')}
-                    onChange={e => {
-                      const val = e.target.value
-                      if (val === '') {
-                        setEditingSub({ ...editingSub, due_day: 0 })
-                      } else {
-                        const num = Number(val)
-                        if (!isNaN(num)) {
-                          const clamped = num < 1 ? 1 : num > 31 ? 31 : num
-                          setEditingSub({ ...editingSub, due_day: clamped })
-                        }
-                      }
-                    }}
-                    onBlur={e => {
-                      const val = e.target.value
-                      if (val === '' || Number(val) < 1 || Number(val) > 31) {
-                        setEditingSub({ ...editingSub, due_day: 1 })
-                      }
-                    }}
-                  />
+
+                <div className="grid" style={{ gap: 12 }}>
+                  <div>
+                    <label>Amount</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      inputMode="decimal"
+                      value={editingSub.amount || ''}
+                      onChange={e => {
+                        const val = e.target.value
+                        setEditingSub({ ...editingSub, amount: val === '' ? 0 : parseFloat(val) || 0 })
+                      }}
+                    />
+                  </div>
+
+                  <div className="grid" style={{ gridTemplateColumns: editingSub.frequency === 'monthly' ? 'repeat(2, minmax(0, 1fr))' : 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
+                    {editingSub.frequency !== 'monthly' && (
+                      <div>
+                        <label>Due month</label>
+                        <select 
+                          value={editingSub.due_month || 1} 
+                          onChange={e => setEditingSub({ ...editingSub, due_month: Number(e.target.value) })}
+                        >
+                          {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, i) => (
+                            <option key={i + 1} value={i + 1}>{month}</option>
+                          ))}
+                        </select>
+                      </div>
+                    )}
+                    <div>
+                      <label>Due day (1-31)</label>
+                      <input
+                        type="number"
+                        min="1"
+                        max="31"
+                        inputMode="numeric"
+                        placeholder="1"
+                        value={editingSub.due_day === 0 ? '' : (editingSub.due_day || '')}
+                        onChange={e => {
+                          const val = e.target.value
+                          if (val === '') {
+                            setEditingSub({ ...editingSub, due_day: 0 })
+                          } else {
+                            const num = Number(val)
+                            if (!isNaN(num)) {
+                              const clamped = num < 1 ? 1 : num > 31 ? 31 : num
+                              setEditingSub({ ...editingSub, due_day: clamped })
+                            }
+                          }
+                        }}
+                        onBlur={e => {
+                          const val = e.target.value
+                          if (val === '' || Number(val) < 1 || Number(val) > 31) {
+                            setEditingSub({ ...editingSub, due_day: 1 })
+                          }
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <label>Frequency</label>
+                      <select value={editingSub.frequency} onChange={e => setEditingSub({ ...editingSub, frequency: e.target.value as any })}>
+                        {frequencies.map(f => <option key={f} value={f}>{formatFrequency(f)}</option>)}
+                      </select>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <label>Frequency</label>
-                  <select value={editingSub.frequency} onChange={e => setEditingSub({ ...editingSub, frequency: e.target.value as any })}>
-                    {frequencies.map(f => <option key={f} value={f}>{formatFrequency(f)}</option>)}
-                  </select>
+
+                <div className="row" style={{ marginTop: 12, gap: 16 }}>
+                  <label style={{ margin: 0, display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={editingSub.is_active}
+                      onChange={e => setEditingSub({ ...editingSub, is_active: e.target.checked })}
+                      style={{ width: 18, height: 18, marginRight: 8 }}
+                    />
+                    Active
+                  </label>
+                  <label style={{ margin: 0, display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={editingSub.auto_pay || false}
+                      onChange={e => setEditingSub({ ...editingSub, auto_pay: e.target.checked })}
+                      style={{ width: 18, height: 18, marginRight: 8 }}
+                    />
+                    Auto Pay
+                  </label>
                 </div>
+
+                <label>Notes</label>
+                <textarea rows={3} value={editingSub.notes ?? ''} onChange={e => setEditingSub({ ...editingSub, notes: e.target.value })} />
               </div>
+            </div>
 
-              <div className="row" style={{ marginTop: 12, gap: 16 }}>
-                <label style={{ margin: 0, display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  <input
-                    type="checkbox"
-                    checked={editingSub.is_active}
-                    onChange={e => setEditingSub({ ...editingSub, is_active: e.target.checked })}
-                    style={{ width: 18, height: 18, marginRight: 8 }}
-                  />
-                  Active
-                </label>
-                <label style={{ margin: 0, display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  <input
-                    type="checkbox"
-                    checked={editingSub.auto_pay || false}
-                    onChange={e => setEditingSub({ ...editingSub, auto_pay: e.target.checked })}
-                    style={{ width: 18, height: 18, marginRight: 8 }}
-                  />
-                  Auto Pay
-                </label>
-              </div>
-
-              <label>Notes</label>
-              <textarea rows={3} value={editingSub.notes ?? ''} onChange={e => setEditingSub({ ...editingSub, notes: e.target.value })} />
-
-              <div className="row" style={{ justifyContent: 'flex-end', gap: 8, marginTop: 8 }}>
+            {/* Fixed Footer */}
+            <div style={{ 
+              padding: '20px', 
+              borderTop: '1px solid rgba(34,49,84,.5)',
+              flexShrink: 0
+            }}>
+              <div className="row" style={{ justifyContent: 'flex-end', gap: 8 }}>
                 <button className="btn secondary" onClick={() => setEditingSub(null)}>Cancel</button>
                 <button className="btn" onClick={() => saveSub(editingSub)}>Save</button>
               </div>

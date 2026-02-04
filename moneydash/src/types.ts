@@ -95,6 +95,7 @@ export type Subscription = {
   name: string
   amount: number
   due_day: number // 1-31
+  due_month?: number // 1-12 (for annual/multi-year subscriptions)
   frequency: Frequency
   category_id?: UUID
   account_id?: UUID

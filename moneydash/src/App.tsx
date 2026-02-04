@@ -104,7 +104,7 @@ export default function App() {
         <NavLink to="/dashboard" style={{ textDecoration: 'none', color: 'inherit' }}>
           <div className="brand">
             <img 
-              src="/monedash-logo.png" 
+              src={`${import.meta.env.BASE_URL || '/'}moneydash-logo.png`}
               alt="MoneyDash" 
               style={{ height: '50px', width: 'auto' }}
             />
@@ -124,7 +124,7 @@ export default function App() {
         <NavLink to="/dashboard" style={{ textDecoration: 'none', color: 'inherit' }}>
           <div className="brand">
             <img 
-              src="/monedash-logo.png" 
+              src={`${import.meta.env.BASE_URL || '/'}moneydash-logo.png`}
               alt="MoneyDash" 
               style={{ height: '50px', width: 'auto' }}
             />

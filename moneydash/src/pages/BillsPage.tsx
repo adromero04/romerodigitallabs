@@ -285,18 +285,25 @@ export default function BillsPage() {
               transform: 'translate(-50%, -50%)',
               width: '90%',
               maxWidth: '600px',
-              maxHeight: '90vh',
+              maxHeight: '80vh',
               background: 'var(--bg)',
               border: '1px solid rgba(34,49,84,.8)',
               borderRadius: '18px',
-              padding: '20px',
               zIndex: 201,
-              overflowY: 'auto',
               boxShadow: '0 10px 40px rgba(0,0,0,.5)',
+              display: 'flex',
+              flexDirection: 'column',
             }}
             aria-label="Bill editor"
           >
-            <div className="row" style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+            {/* Fixed Header */}
+            <div className="row" style={{ 
+              justifyContent: 'space-between', 
+              alignItems: 'center', 
+              padding: '20px',
+              borderBottom: '1px solid rgba(34,49,84,.5)',
+              flexShrink: 0
+            }}>
               <div style={{ fontWeight: 900, fontSize: 20 }}>
                 {editing.id && bills.find(b => b.id === editing.id) ? 'Edit bill' : 'Add bill'}
               </div>
@@ -323,96 +330,111 @@ export default function BillsPage() {
               </button>
             </div>
 
-            <div className="grid" style={{ gap: 14 }}>
-              <div>
-                <label>Name</label>
-                <input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} placeholder="e.g., Rent" />
-              </div>
-
-              <CustomSelect
-                label="Category"
-                value={editing.category_id || ''}
-                onChange={(value) => setEditing({ ...editing, category_id: value })}
-                options={sortCategories(categories).map(cat => ({ value: cat.id, label: cat.name }))}
-              />
-
-              <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12 }}>
+            {/* Scrollable Body */}
+            <div style={{ 
+              padding: '20px', 
+              overflowY: 'auto', 
+              flex: 1,
+              minHeight: 0
+            }}>
+              <div className="grid" style={{ gap: 14 }}>
                 <div>
-                  <label>Amount</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    inputMode="decimal"
-                    value={editing.amount || ''}
-                    onChange={e => {
-                      const val = e.target.value
-                      setEditing({ ...editing, amount: val === '' ? 0 : parseFloat(val) || 0 })
-                    }}
-                  />
+                  <label>Name</label>
+                  <input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} placeholder="e.g., Rent" />
                 </div>
-                <div>
-                  <label>Due day (1-31)</label>
-                  <input
-                    type="number"
-                    min="1"
-                    max="31"
-                    inputMode="numeric"
-                    placeholder="1"
-                    value={editing.due_day === 0 ? '' : (editing.due_day || '')}
-                    onChange={e => {
-                      const val = e.target.value
-                      if (val === '') {
-                        setEditing({ ...editing, due_day: 0 })
-                      } else {
-                        const num = Number(val)
-                        if (!isNaN(num)) {
-                          setEditing({ ...editing, due_day: clampDay(num) })
+
+                <CustomSelect
+                  label="Category"
+                  value={editing.category_id || ''}
+                  onChange={(value) => setEditing({ ...editing, category_id: value })}
+                  options={sortCategories(categories).map(cat => ({ value: cat.id, label: cat.name }))}
+                />
+
+                <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: 12 }}>
+                  <div>
+                    <label>Amount</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      inputMode="decimal"
+                      value={editing.amount || ''}
+                      onChange={e => {
+                        const val = e.target.value
+                        setEditing({ ...editing, amount: val === '' ? 0 : parseFloat(val) || 0 })
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label>Due day (1-31)</label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="31"
+                      inputMode="numeric"
+                      placeholder="1"
+                      value={editing.due_day === 0 ? '' : (editing.due_day || '')}
+                      onChange={e => {
+                        const val = e.target.value
+                        if (val === '') {
+                          setEditing({ ...editing, due_day: 0 })
+                        } else {
+                          const num = Number(val)
+                          if (!isNaN(num)) {
+                            setEditing({ ...editing, due_day: clampDay(num) })
+                          }
                         }
-                      }
-                    }}
-                    onBlur={e => {
-                      const val = e.target.value
-                      if (val === '' || Number(val) < 1 || Number(val) > 31) {
-                        setEditing({ ...editing, due_day: 1 })
-                      }
-                    }}
-                  />
+                      }}
+                      onBlur={e => {
+                        const val = e.target.value
+                        if (val === '' || Number(val) < 1 || Number(val) > 31) {
+                          setEditing({ ...editing, due_day: 1 })
+                        }
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label>Frequency</label>
+                    <select value={editing.frequency} onChange={e => setEditing({ ...editing, frequency: e.target.value as any })}>
+                      {frequencies.map(f => <option key={f} value={f}>{formatFrequency(f)}</option>)}
+                    </select>
+                  </div>
                 </div>
+
+                <div className="row" style={{ marginTop: 12, gap: 20 }}>
+                  <label style={{ margin: 0, display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={editing.auto_pay}
+                      onChange={e => setEditing({ ...editing, auto_pay: e.target.checked })}
+                      style={{ width: 18, height: 18, marginRight: 8 }}
+                    />
+                    Auto-pay
+                  </label>
+                  <label style={{ margin: 0, display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={editing.is_active}
+                      onChange={e => setEditing({ ...editing, is_active: e.target.checked })}
+                      style={{ width: 18, height: 18, marginRight: 8 }}
+                    />
+                    Active
+                  </label>
+                </div>
+
                 <div>
-                  <label>Frequency</label>
-                  <select value={editing.frequency} onChange={e => setEditing({ ...editing, frequency: e.target.value as any })}>
-                    {frequencies.map(f => <option key={f} value={f}>{formatFrequency(f)}</option>)}
-                  </select>
+                  <label>Notes</label>
+                  <textarea rows={3} value={editing.notes ?? ''} onChange={e => setEditing({ ...editing, notes: e.target.value })} />
                 </div>
               </div>
+            </div>
 
-              <div className="row" style={{ marginTop: 12, gap: 20 }}>
-                <label style={{ margin: 0, display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  <input
-                    type="checkbox"
-                    checked={editing.auto_pay}
-                    onChange={e => setEditing({ ...editing, auto_pay: e.target.checked })}
-                    style={{ width: 18, height: 18, marginRight: 8 }}
-                  />
-                  Auto-pay
-                </label>
-                <label style={{ margin: 0, display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  <input
-                    type="checkbox"
-                    checked={editing.is_active}
-                    onChange={e => setEditing({ ...editing, is_active: e.target.checked })}
-                    style={{ width: 18, height: 18, marginRight: 8 }}
-                  />
-                  Active
-                </label>
-              </div>
-
-              <div>
-                <label>Notes</label>
-                <textarea rows={3} value={editing.notes ?? ''} onChange={e => setEditing({ ...editing, notes: e.target.value })} />
-              </div>
-
-              <div className="row" style={{ justifyContent: 'flex-end', gap: 8, marginTop: 8 }}>
+            {/* Fixed Footer */}
+            <div style={{ 
+              padding: '20px', 
+              borderTop: '1px solid rgba(34,49,84,.5)',
+              flexShrink: 0
+            }}>
+              <div className="row" style={{ justifyContent: 'flex-end', gap: 8 }}>
                 <button className="btn secondary" onClick={() => setEditing(null)}>Cancel</button>
                 <button className="btn" onClick={() => save(editing)}>Save</button>
               </div>

@@ -4,10 +4,12 @@ import { deleteDebt, listDebts, upsertDebt } from '../lib/dataAdapter'
 import { fmtMoney, uid } from '../lib/utils'
 import { projectPayoff } from '../lib/calculations/payoff'
 import { seedIfEmpty } from '../lib/seed'
+import PaymentImpactModal from '../components/PaymentImpactModal'
 
 export default function DebtsPage() {
   const [debts, setDebts] = useState<Debt[]>([])
   const [editing, setEditing] = useState<Debt | null>(null)
+  const [paymentImpactDebt, setPaymentImpactDebt] = useState<Debt | null>(null)
   const [budget, setBudget] = useState<number>(250)
   const [strategy, setStrategy] = useState<PayoffStrategy>('snowball')
 
@@ -89,6 +91,7 @@ export default function DebtsPage() {
                 <td>{fmtMoney(d.minimum_payment)}</td>
                 <td className="right">{fmtMoney(d.current_balance)}</td>
                 <td className="right">
+                  <button className="btn secondary" onClick={() => setPaymentImpactDebt(d)} style={{ marginRight: 8 }}>Payment Impact</button>
                   <button className="btn secondary" onClick={() => setEditing(d)} style={{ marginRight: 8 }}>Edit</button>
                   <button className="btn secondary" onClick={() => remove(d.id)}>Delete</button>
                 </td>
@@ -127,7 +130,8 @@ export default function DebtsPage() {
                     </div>
                   )}
 
-                  <div className="row" style={{ justifyContent: 'flex-end', gap: 8 }}>
+                  <div className="row" style={{ justifyContent: 'flex-end', gap: 8, flexWrap: 'wrap' }}>
+                    <button className="btn secondary" onClick={() => setPaymentImpactDebt(d)}>Payment Impact</button>
                     <button className="btn secondary" onClick={() => setEditing(d)}>Edit</button>
                     <button className="btn secondary" onClick={() => remove(d.id)}>Delete</button>
                   </div>
@@ -164,18 +168,25 @@ export default function DebtsPage() {
               transform: 'translate(-50%, -50%)',
               width: '90%',
               maxWidth: '600px',
-              maxHeight: '90vh',
+              maxHeight: '80vh',
               background: 'var(--bg)',
               border: '1px solid rgba(34,49,84,.8)',
               borderRadius: '18px',
-              padding: '20px',
               zIndex: 201,
-              overflowY: 'auto',
               boxShadow: '0 10px 40px rgba(0,0,0,.5)',
+              display: 'flex',
+              flexDirection: 'column',
             }}
             aria-label="Debt editor"
           >
-            <div className="row" style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+            {/* Fixed Header */}
+            <div className="row" style={{ 
+              justifyContent: 'space-between', 
+              alignItems: 'center', 
+              padding: '20px',
+              borderBottom: '1px solid rgba(34,49,84,.5)',
+              flexShrink: 0
+            }}>
               <div style={{ fontWeight: 900, fontSize: 20 }}>
                 {editing.id && debts.find(d => d.id === editing.id) ? 'Edit debt' : 'Add debt'}
               </div>
@@ -202,105 +213,128 @@ export default function DebtsPage() {
               </button>
             </div>
 
-            <div className="grid" style={{ gap: 14 }}>
-              <div>
-                <label>Name</label>
-                <input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} placeholder="e.g., Capital One, Affirm, Klarna" />
-              </div>
+            {/* Scrollable Body */}
+            <div style={{ 
+              padding: '20px', 
+              overflowY: 'auto', 
+              flex: 1,
+              minHeight: 0
+            }}>
+              <div className="grid" style={{ gap: 14 }}>
+                <div>
+                  <label>Name</label>
+                  <input value={editing.name} onChange={e => setEditing({ ...editing, name: e.target.value })} placeholder="e.g., Capital One, Affirm, Klarna" />
+                </div>
 
-              <div className="grid" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
-                <div>
-                  <label>Current balance</label>
-                  <input 
-                    type="number"
-                    step="0.01"
-                    inputMode="decimal" 
-                    value={editing.current_balance || ''} 
-                    onChange={e => {
-                      const val = e.target.value
-                      setEditing({ ...editing, current_balance: val === '' ? 0 : parseFloat(val) || 0 })
-                    }} 
-                  />
+                <div className="grid" style={{ gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
+                  <div>
+                    <label>Current balance</label>
+                    <input 
+                      type="number"
+                      step="0.01"
+                      inputMode="decimal" 
+                      value={editing.current_balance || ''} 
+                      onChange={e => {
+                        const val = e.target.value
+                        setEditing({ ...editing, current_balance: val === '' ? 0 : parseFloat(val) || 0 })
+                      }} 
+                    />
+                  </div>
+                  <div>
+                    <label>APR %</label>
+                    <input 
+                      type="number"
+                      step="0.01"
+                      inputMode="decimal" 
+                      value={editing.interest_rate_annual || ''} 
+                      onChange={e => {
+                        const val = e.target.value
+                        setEditing({ ...editing, interest_rate_annual: val === '' ? 0 : parseFloat(val) || 0 })
+                      }} 
+                    />
+                  </div>
+                  <div>
+                    <label>Minimum payment</label>
+                    <input 
+                      type="number"
+                      step="0.01"
+                      inputMode="decimal" 
+                      value={editing.minimum_payment || ''} 
+                      onChange={e => {
+                        const val = e.target.value
+                        setEditing({ ...editing, minimum_payment: val === '' ? 0 : parseFloat(val) || 0 })
+                      }} 
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label>APR %</label>
-                  <input 
-                    type="number"
-                    step="0.01"
-                    inputMode="decimal" 
-                    value={editing.interest_rate_annual || ''} 
-                    onChange={e => {
-                      const val = e.target.value
-                      setEditing({ ...editing, interest_rate_annual: val === '' ? 0 : parseFloat(val) || 0 })
-                    }} 
-                  />
-                </div>
-                <div>
-                  <label>Minimum payment</label>
-                  <input 
-                    type="number"
-                    step="0.01"
-                    inputMode="decimal" 
-                    value={editing.minimum_payment || ''} 
-                    onChange={e => {
-                      const val = e.target.value
-                      setEditing({ ...editing, minimum_payment: val === '' ? 0 : parseFloat(val) || 0 })
-                    }} 
-                  />
-                </div>
-              </div>
 
-              <div className="grid" style={{ gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
-                <div>
-                  <label>Due day (1-31)</label>
-                  <input 
-                    type="number"
-                    min="1"
-                    max="31"
-                    inputMode="numeric" 
-                    placeholder="1"
-                    value={editing.due_day === 0 ? '' : (editing.due_day || '')} 
-                    onChange={e => {
-                      const val = e.target.value
-                      if (val === '') {
-                        setEditing({ ...editing, due_day: 0 })
-                      } else {
-                        const num = Number(val)
-                        if (!isNaN(num)) {
-                          const clamped = num < 1 ? 1 : num > 31 ? 31 : num
-                          setEditing({ ...editing, due_day: clamped })
+                <div className="grid" style={{ gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 12 }}>
+                  <div>
+                    <label>Due day (1-31)</label>
+                    <input 
+                      type="number"
+                      min="1"
+                      max="31"
+                      inputMode="numeric" 
+                      placeholder="1"
+                      value={editing.due_day === 0 ? '' : (editing.due_day || '')} 
+                      onChange={e => {
+                        const val = e.target.value
+                        if (val === '') {
+                          setEditing({ ...editing, due_day: 0 })
+                        } else {
+                          const num = Number(val)
+                          if (!isNaN(num)) {
+                            const clamped = num < 1 ? 1 : num > 31 ? 31 : num
+                            setEditing({ ...editing, due_day: clamped })
+                          }
                         }
-                      }
-                    }}
-                    onBlur={e => {
-                      const val = e.target.value
-                      if (val === '' || Number(val) < 1 || Number(val) > 31) {
-                        setEditing({ ...editing, due_day: 1 })
-                      }
-                    }}
-                  />
+                      }}
+                      onBlur={e => {
+                        const val = e.target.value
+                        if (val === '' || Number(val) < 1 || Number(val) > 31) {
+                          setEditing({ ...editing, due_day: 1 })
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="row" style={{ marginTop: 12 }}>
+                  <label style={{ margin: 0, display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                    <input
+                      type="checkbox"
+                      checked={editing.auto_pay || false}
+                      onChange={e => setEditing({ ...editing, auto_pay: e.target.checked })}
+                      style={{ width: 18, height: 18, marginRight: 8 }}
+                    />
+                    Auto Pay
+                  </label>
                 </div>
               </div>
+            </div>
 
-              <div className="row" style={{ marginTop: 12 }}>
-                <label style={{ margin: 0, display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                  <input
-                    type="checkbox"
-                    checked={editing.auto_pay || false}
-                    onChange={e => setEditing({ ...editing, auto_pay: e.target.checked })}
-                    style={{ width: 18, height: 18, marginRight: 8 }}
-                  />
-                  Auto Pay
-                </label>
-              </div>
-
-              <div className="row" style={{ justifyContent: 'flex-end', gap: 8, marginTop: 8 }}>
+            {/* Fixed Footer */}
+            <div style={{ 
+              padding: '20px', 
+              borderTop: '1px solid rgba(34,49,84,.5)',
+              flexShrink: 0
+            }}>
+              <div className="row" style={{ justifyContent: 'flex-end', gap: 8 }}>
                 <button className="btn secondary" onClick={() => setEditing(null)}>Cancel</button>
                 <button className="btn" onClick={() => save(editing)}>Save</button>
               </div>
             </div>
           </div>
         </>
+      )}
+
+      {/* Payment Impact Modal */}
+      {paymentImpactDebt && (
+        <PaymentImpactModal
+          debt={paymentImpactDebt}
+          onClose={() => setPaymentImpactDebt(null)}
+        />
       )}
     </div>
   )

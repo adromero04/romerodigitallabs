@@ -99,7 +99,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
       
       onClose()
       // Force a hard reload with a query parameter to bypass cache
-      window.location.href = '/?logout=' + Date.now()
+      window.location.href = '/moneydash/?logout=' + Date.now()
     }
   }
 
@@ -191,18 +191,25 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           transform: 'translate(-50%, -50%)',
           width: '90%',
           maxWidth: '400px',
-          maxHeight: '90vh',
+          maxHeight: '80vh',
           background: 'var(--bg)',
           border: '1px solid rgba(34,49,84,.8)',
           borderRadius: '18px',
-          padding: '20px',
           zIndex: 201,
-          overflowY: 'auto',
           boxShadow: '0 10px 40px rgba(0,0,0,.5)',
+          display: 'flex',
+          flexDirection: 'column',
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="row" style={{ justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+        {/* Fixed Header */}
+        <div className="row" style={{ 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          padding: '20px',
+          borderBottom: '1px solid rgba(34,49,84,.5)',
+          flexShrink: 0
+        }}>
           <div style={{ fontWeight: 900, fontSize: 20 }}>
             Create Account
           </div>
@@ -232,59 +239,74 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           </button>
         </div>
 
-        <form onSubmit={handleCreateAccount}>
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', color: '#9fb0d0' }}>
-              Email
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', color: '#9fb0d0' }}>
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          {error && (
-            <div style={{
-              marginBottom: '20px',
-              padding: '12px',
-              background: 'rgba(239, 68, 68, 0.1)',
-              border: '1px solid rgba(239, 68, 68, 0.3)',
-              borderRadius: '8px',
-              color: '#ef4444',
-              fontSize: '14px'
-            }}>
-              {error}
+        {/* Scrollable Body */}
+        <div style={{ 
+          padding: '20px', 
+          overflowY: 'auto', 
+          flex: 1,
+          minHeight: 0
+        }}>
+          <form onSubmit={handleCreateAccount} id="createAccountForm">
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', color: '#9fb0d0' }}>
+                Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
-          )}
 
-          <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
-            <button
-              type="submit"
-              className="btn"
-              style={{
-                flex: 1,
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '14px', color: '#9fb0d0' }}>
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+
+            {error && (
+              <div style={{
+                marginBottom: '20px',
                 padding: '12px',
-                fontSize: '16px',
-                fontWeight: 600
-              }}
-            >
-              Create Account
-            </button>
-          </div>
+                background: 'rgba(239, 68, 68, 0.1)',
+                border: '1px solid rgba(239, 68, 68, 0.3)',
+                borderRadius: '8px',
+                color: '#ef4444',
+                fontSize: '14px'
+              }}>
+                {error}
+              </div>
+            )}
+          </form>
+        </div>
+
+        {/* Fixed Footer */}
+        <div style={{ 
+          padding: '20px', 
+          borderTop: '1px solid rgba(34,49,84,.5)',
+          flexShrink: 0
+        }}>
+          <button
+            type="submit"
+            form="createAccountForm"
+            className="btn"
+            style={{
+              width: '100%',
+              padding: '12px',
+              fontSize: '16px',
+              fontWeight: 600,
+              marginBottom: '12px'
+            }}
+          >
+            Create Account
+          </button>
 
           <div style={{ textAlign: 'center' }}>
             <button
@@ -305,7 +327,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               Cancel
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </>
   ) : null
