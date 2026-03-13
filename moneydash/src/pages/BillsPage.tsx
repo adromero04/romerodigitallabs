@@ -112,6 +112,11 @@ export default function BillsPage() {
     return categories.find(c => c.id === categoryId)?.name
   }
 
+  const billsTotal = useMemo(() => 
+    filteredBills.reduce((sum, b) => sum + (b.amount || 0), 0), 
+    [filteredBills]
+  )
+
   return (
     <div className="grid" style={{ gap: 14 }}>
       <div className="row" style={{ justifyContent: 'space-between' }}>
@@ -121,6 +126,13 @@ export default function BillsPage() {
         </div>
         <button className="btn" onClick={startNew}>+ Add bill</button>
       </div>
+
+      {filteredBills.length > 0 && (
+        <div className="card" style={{ padding: '12px 16px' }}>
+          <div style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 4 }}>Total</div>
+          <div style={{ fontSize: 24, fontWeight: 850, color: 'var(--accent)' }}>{fmtMoney(billsTotal)}</div>
+        </div>
+      )}
 
       {/* Filters Accordion */}
       <div className="card">

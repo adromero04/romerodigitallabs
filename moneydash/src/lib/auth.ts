@@ -189,8 +189,12 @@ export async function resetPassword(email: string): Promise<void> {
 
   const normalizedEmail = email.trim().toLowerCase()
 
+  // Use app base path (e.g. /moneydash/ in production) so redirect lands on our reset page
+  const base = (import.meta.env?.BASE_URL ?? '/').replace(/\/$/, '') || ''
+  const redirectTo = `${window.location.origin}${base}/reset-password`
+
   const { error } = await supabase.auth.resetPasswordForEmail(normalizedEmail, {
-    redirectTo: `${window.location.origin}/reset-password`,
+    redirectTo,
   })
 
   if (error) {

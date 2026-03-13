@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
-import { NavLink, Route, Routes, Navigate } from 'react-router-dom'
+import { NavLink, Route, Routes, Navigate, useLocation } from 'react-router-dom'
 import LandingPage from './pages/LandingPage'
+import ResetPasswordPage from './pages/ResetPasswordPage'
 import HomePage from './pages/HomePage'
 import BillsPage from './pages/BillsPage'
 import DebtsPage from './pages/DebtsPage'
@@ -88,10 +89,17 @@ export default function App() {
   }, [])
 
   // Show landing page if not authenticated
+  const location = useLocation()
   if (!authenticated) {
+    // If Supabase sent user to base URL with recovery token in hash, show reset-password page
+    const hash = location.hash || ''
+    if (location.pathname === '/' && hash.includes('type=recovery')) {
+      return <Navigate to={`/reset-password${hash}`} replace />
+    }
     return (
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     )

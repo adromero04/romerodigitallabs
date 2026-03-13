@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { Frequency, Subscription } from '../types'
 import { deleteSubscription, listSubscriptions, upsertSubscription } from '../lib/dataAdapter'
 import { fmtMoney, uid, todayISO } from '../lib/utils'
@@ -14,6 +14,7 @@ function formatFrequency(f: Frequency): string {
 export default function SubscriptionsPage() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
   const [editingSub, setEditingSub] = useState<Subscription | null>(null)
+  const [saveError, setSaveError] = useState<string | null>(null)
 
   async function refresh() {
     setSubscriptions(await listSubscriptions())
@@ -21,6 +22,7 @@ export default function SubscriptionsPage() {
   useEffect(() => { seedIfEmpty().then(refresh) }, [])
 
   function startNewSub() {
+    setSaveError(null)
     setEditingSub({
       id: uid(),
       name: '',
@@ -35,10 +37,15 @@ export default function SubscriptionsPage() {
   }
 
   async function saveSub(s: Subscription) {
-    const subToSave = { ...s, due_day: s.due_day < 1 || s.due_day > 31 ? 1 : s.due_day }
-    await upsertSubscription(subToSave)
-    setEditingSub(null)
-    await refresh()
+    setSaveError(null)
+    try {
+      const subToSave = { ...s, due_day: s.due_day < 1 || s.due_day > 31 ? 1 : s.due_day }
+      await upsertSubscription(subToSave)
+      setEditingSub(null)
+      await refresh()
+    } catch (e: any) {
+      setSaveError(e?.message || 'Failed to save subscription')
+    }
   }
 
   async function removeSub(id: string) {
@@ -46,6 +53,17 @@ export default function SubscriptionsPage() {
     await deleteSubscription(id)
     await refresh()
   }
+
+  const subscriptionsTotal = useMemo(() => {
+    return subscriptions
+      .filter(s => s.is_active)
+      .reduce((sum, s) => {
+        const amt = s.amount || 0
+        if (s.frequency === 'monthly') return sum + amt
+        const months = parseInt(String(s.frequency).replace('mo', ''), 10) || 12
+        return sum + amt / months
+      }, 0)
+  }, [subscriptions])
 
   return (
     <div className="grid" style={{ gap: 14 }}>
@@ -56,6 +74,13 @@ export default function SubscriptionsPage() {
         </div>
         <button className="btn subscriptions-add-btn" onClick={startNewSub}>+ Add subscription</button>
       </div>
+
+      {subscriptions.length > 0 && (
+        <div className="card" style={{ padding: '12px 16px' }}>
+          <div style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 4 }}>Total (monthly)</div>
+          <div style={{ fontSize: 24, fontWeight: 850, color: 'var(--accent)' }}>{fmtMoney(subscriptionsTotal)}</div>
+        </div>
+      )}
 
       {!subscriptions.length ? (
         <div className="card">
@@ -107,7 +132,7 @@ export default function SubscriptionsPage() {
         <>
           <div 
             className="bill-modal-overlay" 
-            onClick={() => setEditingSub(null)}
+            onClick={() => { setSaveError(null); setEditingSub(null) }}
             style={{
               position: 'fixed',
               top: 0,
@@ -138,6 +163,7 @@ export default function SubscriptionsPage() {
               flexDirection: 'column',
             }}
             aria-label="Subscription editor"
+            onClick={(e) => e.stopPropagation()}
           >
             {/* Fixed Header */}
             <div className="row" style={{ 
@@ -152,7 +178,7 @@ export default function SubscriptionsPage() {
               </div>
               <button 
                 className="settings-close" 
-                onClick={() => setEditingSub(null)}
+                onClick={() => { setSaveError(null); setEditingSub(null) }}
                 style={{
                   background: 'rgba(18,27,46,.6)',
                   border: '1px solid rgba(34,49,84,.8)',
@@ -276,6 +302,11 @@ export default function SubscriptionsPage() {
 
                 <label>Notes</label>
                 <textarea rows={3} value={editingSub.notes ?? ''} onChange={e => setEditingSub({ ...editingSub, notes: e.target.value })} />
+                {saveError && (
+                  <div style={{ padding: '12px', background: 'rgba(239,68,68,.1)', border: '1px solid rgba(239,68,68,.3)', borderRadius: 8, color: '#ef4444', fontSize: 14 }}>
+                    {saveError}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -286,7 +317,7 @@ export default function SubscriptionsPage() {
               flexShrink: 0
             }}>
               <div className="row" style={{ justifyContent: 'flex-end', gap: 8 }}>
-                <button className="btn secondary" onClick={() => setEditingSub(null)}>Cancel</button>
+                <button className="btn secondary" onClick={() => { setSaveError(null); setEditingSub(null) }}>Cancel</button>
                 <button className="btn" onClick={() => saveSub(editingSub)}>Save</button>
               </div>
             </div>

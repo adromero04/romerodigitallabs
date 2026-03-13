@@ -248,9 +248,12 @@ export async function upsertSubscription(subscription: Omit<Subscription, 'id'> 
   if (!userId) throw new Error('Not authenticated')
   
   const id = subscription.id || uid()
+  // Only send columns that exist on subscriptions table (no due_month in schema)
+  const { due_month: _dm, ...rest } = subscription
+  const row = { ...rest, id, user_id: userId }
   const { error } = await supabase!
     .from('subscriptions')
-    .upsert({ ...subscription, id, user_id: userId }, { onConflict: 'id' })
+    .upsert(row, { onConflict: 'id' })
   
   if (error) throw error
   return id

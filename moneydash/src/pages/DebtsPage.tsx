@@ -58,15 +58,37 @@ export default function DebtsPage() {
     }
   }, [projection])
 
+  const debtsTotal = useMemo(() => 
+    debts.reduce((sum, d) => sum + (d.current_balance || 0), 0), 
+    [debts]
+  )
+
+  const monthlyTotal = useMemo(() => 
+    debts.reduce((sum, d) => sum + (d.minimum_payment || 0), 0), 
+    [debts]
+  )
+
   return (
     <div className="grid" style={{ gap: 14 }}>
       <div className="row" style={{ justifyContent: 'space-between' }}>
         <div>
           <div className="big" style={{ fontSize: 22 }}>Debts</div>
-          <small>Run snowball/avalanche projections locally.</small>
         </div>
         <button className="btn" onClick={startNew}>+ Add debt</button>
       </div>
+
+      {debts.length > 0 && (
+        <div className="card" style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div>
+            <div style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 4 }}>Total balance</div>
+            <div style={{ fontSize: 24, fontWeight: 850, color: 'var(--accent)' }}>{fmtMoney(debtsTotal)}</div>
+          </div>
+          <div style={{ borderTop: '1px solid rgba(34,49,84,.5)', paddingTop: 12 }}>
+            <div style={{ fontSize: 14, color: 'var(--muted)', marginBottom: 4 }}>Monthly total</div>
+            <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--text)' }}>{fmtMoney(monthlyTotal)}</div>
+          </div>
+        </div>
+      )}
 
       <div className="card">
         <h3>Your debts</h3>

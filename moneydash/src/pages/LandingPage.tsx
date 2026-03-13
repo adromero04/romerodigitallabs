@@ -140,7 +140,7 @@ export default function LandingPage() {
     try {
       const { resetPassword } = await import('../lib/auth')
       await resetPassword(email)
-      setSuccessMessage('Password reset email sent! Please check your inbox and follow the instructions to reset your password.')
+      setSuccessMessage('If an account exists for this email, you’ll receive a reset link shortly. Check your spam/junk folder and allow a few minutes. The link usually comes from Supabase.')
     } catch (err: any) {
       setError(err.message || 'Failed to send password reset email. Please try again.')
       console.error('Password reset error:', err)
