@@ -11,13 +11,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # FTP-Deploy-Action requires non-empty `server`. If GitHub secrets are missing, skip instead of failing the run.
+      - name: FTPS deploy not configured
+        if: ${{ secrets.FTP_HOST == '' || secrets.FTP_USER == '' || secrets.FTP_PASS == '' }}
+        run: |
+          echo "::notice::Skipping Hostinger FTPS deploy. Add repo secrets: FTP_HOST, FTP_USER, FTP_PASS (optional: FTP_PORT, default 21). GitHub → Settings → Secrets and variables → Actions."
+
       - name: Deploy via FTPS to Hostinger
+        if: ${{ secrets.FTP_HOST != '' && secrets.FTP_USER != '' && secrets.FTP_PASS != '' }}
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
-          port: ${{ secrets.FTP_PORT }}
+          port: ${{ secrets.FTP_PORT != '' && secrets.FTP_PORT || 21 }}
           protocol: ftps
           local-dir: ./
           server-dir: /public_html/
