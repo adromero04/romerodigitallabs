@@ -18,6 +18,14 @@ export async function SimplelistUserSearchResults({ email }: Props) {
     );
   }
 
+  if (result.status === "not_configured") {
+    return (
+      <BrewmoteStateCallout variant="info" title="SimpleList is not connected">
+        {result.message}
+      </BrewmoteStateCallout>
+    );
+  }
+
   if (result.status === "error") {
     return (
       <BrewmoteStateCallout variant="error" title="User search failed">

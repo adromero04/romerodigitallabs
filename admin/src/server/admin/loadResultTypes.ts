@@ -41,6 +41,7 @@ export type SimpleListUsersOverviewResult =
       trend: UserTrendResult;
       recentError?: string;
     }
+  | { status: "not_configured"; message: string }
   | { status: "error"; message: string };
 
 export type UserSearchResult =
@@ -48,6 +49,11 @@ export type UserSearchResult =
   | { status: "success"; users: User[] }
   | { status: "empty" }
   | { status: "error"; message: string };
+
+/** SimpleList email search; adds disabled state when SIMPLELIST_* env is omitted. */
+export type SimpleListUserSearchResult =
+  | UserSearchResult
+  | { status: "not_configured"; message: string };
 
 export type CafeSearchResult =
   | { status: "idle" }

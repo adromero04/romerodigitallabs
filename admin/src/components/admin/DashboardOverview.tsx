@@ -10,11 +10,22 @@ function formatNumber(n: number): string {
 type Props = { snapshot: DashboardSnapshot };
 
 export function DashboardOverview({ snapshot }: Props) {
-  const { brewmoteUsers, simpleListUsers, brewmoteUserTrend, simpleListUserTrend, recentSignups } =
-    snapshot;
+  const {
+    simpleListIntegrationConfigured,
+    brewmoteUsers,
+    simpleListUsers,
+    brewmoteUserTrend,
+    simpleListUserTrend,
+    recentSignups,
+  } = snapshot;
 
-  const combined =
-    brewmoteUsers.ok && simpleListUsers.ok ? brewmoteUsers.value + simpleListUsers.value : null;
+  const combined = simpleListIntegrationConfigured
+    ? brewmoteUsers.ok && simpleListUsers.ok
+      ? brewmoteUsers.value + simpleListUsers.value
+      : null
+    : brewmoteUsers.ok
+      ? brewmoteUsers.value
+      : null;
   const combinedTrend = getCombinedUserTrend(brewmoteUserTrend, simpleListUserTrend);
 
   return (
@@ -23,7 +34,9 @@ export function DashboardOverview({ snapshot }: Props) {
         <p className="admin-kicker">Dashboard</p>
         <h1 className="admin-page-title">Control center</h1>
         <p className="admin-page-lead muted">
-          Live totals for Brewmote and SimpleList. Each card shows how user counts grew over the last 30 days and how new signups compare to the 30 days before.
+          {simpleListIntegrationConfigured
+            ? "Live totals for Brewmote and SimpleList. Each card shows how user counts grew over the last 30 days and how new signups compare to the 30 days before."
+            : "Brewmote totals and trends; SimpleList is not configured on this server."}
         </p>
       </header>
 
@@ -45,7 +58,11 @@ export function DashboardOverview({ snapshot }: Props) {
             <p className="stat-card__value">
               {simpleListUsers.ok ? formatNumber(simpleListUsers.value) : "—"}
             </p>
-            {!simpleListUsers.ok ? <p className="stat-card__err muted">{simpleListUsers.message}</p> : null}
+            {!simpleListUsers.ok ? (
+              <p className={simpleListIntegrationConfigured ? "stat-card__err muted" : "stat-card__hint muted"}>
+                {simpleListUsers.message}
+              </p>
+            ) : null}
             <UserCountTrendSparkline result={simpleListUserTrend} variant="simplelist" />
           </article>
           <article className="stat-card stat-card--combined">
@@ -54,7 +71,11 @@ export function DashboardOverview({ snapshot }: Props) {
               {combined !== null ? formatNumber(combined) : "—"}
             </p>
             {combined === null ? (
-              <p className="stat-card__hint muted">Both projects must load to sum.</p>
+              <p className="stat-card__hint muted">
+                {simpleListIntegrationConfigured
+                  ? "Both projects must load to sum."
+                  : "Brewmote must load to show the total."}
+              </p>
             ) : null}
             <UserCountTrendSparkline result={combinedTrend} variant="combined" />
           </article>
@@ -67,7 +88,9 @@ export function DashboardOverview({ snapshot }: Props) {
             Recent signups
           </h2>
           <p className="muted admin-section-desc">
-            Newest Brewmote signups first. SimpleList shows the most recent accounts from its directory.
+            {simpleListIntegrationConfigured
+              ? "Newest Brewmote signups first. SimpleList shows the most recent accounts from its directory."
+              : "Brewmote signups only; SimpleList is not configured."}
           </p>
           {recentSignups.length === 0 ? (
             <p className="muted">Nothing to show yet, or the connection failed.</p>

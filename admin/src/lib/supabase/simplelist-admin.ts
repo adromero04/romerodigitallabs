@@ -8,8 +8,23 @@ import { computeSignupTrendFromPaginatedUsers, type SignupTrendData } from "@/li
  * SimpleList — server-only Supabase client (service role).
  * Never import this module from Client Components or any file that ships to the browser.
  *
- * Env: `SIMPLELIST_SUPABASE_URL`, `SIMPLELIST_SUPABASE_SERVICE_ROLE_KEY`
+ * Env: `SIMPLELIST_SUPABASE_URL`, `SIMPLELIST_SUPABASE_SERVICE_ROLE_KEY` (optional; omit both to disable this workspace)
  */
+
+/** True when both SimpleList env vars are set; otherwise SimpleList routes stay inert. */
+export function isSimpleListIntegrationConfigured(): boolean {
+  const url = process.env.SIMPLELIST_SUPABASE_URL?.trim();
+  const key = process.env.SIMPLELIST_SUPABASE_SERVICE_ROLE_KEY?.trim();
+  return Boolean(url && key);
+}
+
+/** Short copy for stat cards and sparkline fallbacks when SimpleList is disabled. */
+export const SIMPLELIST_DISABLED_LABEL =
+  "SimpleList is not configured (set SIMPLELIST_SUPABASE_URL and SIMPLELIST_SUPABASE_SERVICE_ROLE_KEY to enable).";
+
+/** Longer copy for settings and callouts. */
+export const SIMPLELIST_DISABLED_GUIDE =
+  "Omit SIMPLELIST_SUPABASE_URL and SIMPLELIST_SUPABASE_SERVICE_ROLE_KEY in Vercel (or .env.local) when you only use Brewmote. Add both again to reconnect this tab.";
 
 let cached: SupabaseClient | null = null;
 

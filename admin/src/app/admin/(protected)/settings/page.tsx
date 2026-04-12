@@ -23,13 +23,19 @@ export default function AdminSettingsPage() {
             <li>
               <code className="admin-code">BREWMOTE_SUPABASE_URL</code>, <code className="admin-code">BREWMOTE_SUPABASE_SERVICE_ROLE_KEY</code>
             </li>
+          </ul>
+          <h3 className="hub-card__title" style={{ marginTop: "1.25rem", fontSize: "1rem" }}>
+            Optional (SimpleList workspace)
+          </h3>
+          <ul className="settings-list muted">
             <li>
               <code className="admin-code">SIMPLELIST_SUPABASE_URL</code>,{" "}
-              <code className="admin-code">SIMPLELIST_SUPABASE_SERVICE_ROLE_KEY</code>
+              <code className="admin-code">SIMPLELIST_SUPABASE_SERVICE_ROLE_KEY</code> — omit both on Vercel when you only need Brewmote.
             </li>
           </ul>
           <p className="muted" style={{ marginBottom: 0 }}>
-            Copy the example env file in the admin folder when setting up locally, then open the <Link href="/admin">dashboard</Link>.
+            Copy the example env file in the admin folder when setting up locally, then open the <Link href="/admin">dashboard</Link>. Vercel does not read{" "}
+            <code className="admin-code">.env.local</code>; set variables under Project → Settings → Environment Variables, then redeploy.
           </p>
         </article>
       </div>

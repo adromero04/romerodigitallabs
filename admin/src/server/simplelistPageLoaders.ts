@@ -5,20 +5,22 @@ import {
   getRecentUsers,
   getSimpleListAdminClient,
   getUserSignupTrend,
+  isSimpleListIntegrationConfigured,
   searchUsersByEmail,
+  SIMPLELIST_DISABLED_GUIDE,
 } from "@/lib/supabase/simplelist-admin";
 import type {
   SimpleListUsersOverviewResult,
+  SimpleListUserSearchResult,
   UserListsResult,
-  UserSearchResult,
   UserTrendResult,
 } from "@/server/admin/loadResultTypes";
 import { publicLoadError, publicSupabaseMessage } from "@/server/safePublicError";
 
 export type {
   SimpleListUsersOverviewResult,
+  SimpleListUserSearchResult,
   UserListsResult,
-  UserSearchResult,
   UserTrendResult,
 } from "@/server/admin/loadResultTypes";
 
@@ -36,6 +38,10 @@ export const SIMPLELIST_LISTS_USER_ID_COLUMN = "user_id";
 const LISTS_PER_USER_LIMIT = 100;
 
 export async function loadSimpleListUsersOverview(): Promise<SimpleListUsersOverviewResult> {
+  if (!isSimpleListIntegrationConfigured()) {
+    return { status: "not_configured", message: SIMPLELIST_DISABLED_GUIDE };
+  }
+
   const [trendSettled, recentSettled] = await Promise.allSettled([
     getUserSignupTrend(),
     getRecentUsers(12),
@@ -66,9 +72,12 @@ export async function loadSimpleListUsersOverview(): Promise<SimpleListUsersOver
   };
 }
 
-export async function loadSimpleListUserSearch(email: string | undefined): Promise<UserSearchResult> {
+export async function loadSimpleListUserSearch(email: string | undefined): Promise<SimpleListUserSearchResult> {
   const normalized = normalizeEmailSearchParam(email);
   if (!normalized) return { status: "idle" };
+  if (!isSimpleListIntegrationConfigured()) {
+    return { status: "not_configured", message: SIMPLELIST_DISABLED_GUIDE };
+  }
   try {
     const users = await searchUsersByEmail(normalized);
     if (users.length === 0) return { status: "empty" };
@@ -85,6 +94,10 @@ export async function loadSimpleListUserSearch(email: string | undefined): Promi
 export async function loadSimpleListListsForUser(userId: string | undefined): Promise<UserListsResult> {
   const trimmed = userId?.trim();
   if (!trimmed) return { status: "idle" };
+
+  if (!isSimpleListIntegrationConfigured()) {
+    return { status: "not_configured", message: SIMPLELIST_DISABLED_GUIDE };
+  }
 
   const parsed = parseUuidParam(trimmed);
   if (!parsed.ok) {

@@ -1,7 +1,12 @@
 import "server-only";
 
 import { getRecentBrewmoteUsers as brewmoteRecent, getUserSignupTrend as brewmoteUserSignupTrend } from "@/lib/supabase/brewmote-admin";
-import { getRecentUsers as simpleListRecent, getUserSignupTrend as simpleListUserSignupTrend } from "@/lib/supabase/simplelist-admin";
+import {
+  getRecentUsers as simpleListRecent,
+  getUserSignupTrend as simpleListUserSignupTrend,
+  isSimpleListIntegrationConfigured,
+  SIMPLELIST_DISABLED_LABEL,
+} from "@/lib/supabase/simplelist-admin";
 import type { SignupTrendData } from "@/lib/supabase/userSignupTrend";
 import type { UserTrendResult } from "@/server/admin/loadResultTypes";
 import { publicLoadError } from "@/server/safePublicError";
@@ -18,6 +23,7 @@ export type RecentSignupRow = {
 };
 
 export type DashboardSnapshot = {
+  simpleListIntegrationConfigured: boolean;
   brewmoteUsers: CountResult;
   simpleListUsers: CountResult;
   brewmoteUserTrend: UserTrendResult;
@@ -44,6 +50,45 @@ function mergeCombinedUserTrend(a: SignupTrendData, b: SignupTrendData): SignupT
  * One project failing does not block counts for the other.
  */
 export async function getDashboardSnapshot(): Promise<DashboardSnapshot> {
+  const slOn = isSimpleListIntegrationConfigured();
+
+  if (!slOn) {
+    const [bc, br] = await Promise.allSettled([brewmoteUserSignupTrend(), brewmoteRecent(6)]);
+
+    const brewmoteUsers =
+      bc.status === "fulfilled"
+        ? { ok: true as const, value: bc.value.totalUsers }
+        : { ok: false as const, message: publicLoadError("dashboard.brewmoteUserTrend", bc.reason) };
+    const simpleListUsers = { ok: false as const, message: SIMPLELIST_DISABLED_LABEL };
+    const brewmoteUserTrend: UserTrendResult =
+      bc.status === "fulfilled"
+        ? { ok: true, data: bc.value }
+        : { ok: false, message: publicLoadError("dashboard.brewmoteUserTrend", bc.reason) };
+    const simpleListUserTrend: UserTrendResult = { ok: false, message: SIMPLELIST_DISABLED_LABEL };
+
+    const recentSignups: RecentSignupRow[] = [];
+    if (br.status === "fulfilled") {
+      for (const u of br.value) {
+        recentSignups.push({
+          id: `brewmote-${u.id}`,
+          source: "brewmote",
+          email: u.email ?? null,
+          createdAt: u.created_at,
+        });
+      }
+    }
+    recentSignups.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+    return {
+      simpleListIntegrationConfigured: false,
+      brewmoteUsers,
+      simpleListUsers,
+      brewmoteUserTrend,
+      simpleListUserTrend,
+      recentSignups: recentSignups.slice(0, 8),
+    };
+  }
+
   const [bc, sc, br, sr] = await Promise.allSettled([
     brewmoteUserSignupTrend(),
     simpleListUserSignupTrend(),
@@ -94,6 +139,7 @@ export async function getDashboardSnapshot(): Promise<DashboardSnapshot> {
   recentSignups.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   return {
+    simpleListIntegrationConfigured: true,
     brewmoteUsers,
     simpleListUsers,
     brewmoteUserTrend,
@@ -102,11 +148,14 @@ export async function getDashboardSnapshot(): Promise<DashboardSnapshot> {
   };
 }
 
-/** Sum of per-app trends for the combined overview card (both must be loaded). */
+/** Sum of per-app trends for the combined overview card (both must be loaded when SimpleList is enabled). */
 export function getCombinedUserTrend(
   brewmote: UserTrendResult,
   simpleList: UserTrendResult,
 ): UserTrendResult {
+  if (!isSimpleListIntegrationConfigured()) {
+    return brewmote.ok ? { ok: true, data: brewmote.data } : brewmote;
+  }
   if (!brewmote.ok || !simpleList.ok) {
     return { ok: false, message: "Both projects must load to show combined trend." };
   }

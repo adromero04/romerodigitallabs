@@ -6,6 +6,19 @@ import { loadSimpleListUsersOverview } from "@/server/simplelistPageLoaders";
 export async function SimplelistUsersSection() {
   const result = await loadSimpleListUsersOverview();
 
+  if (result.status === "not_configured") {
+    return (
+      <section className="panel-block admin-section" aria-labelledby="sl-users-heading">
+        <h2 id="sl-users-heading" className="admin-section-title">
+          Users
+        </h2>
+        <BrewmoteStateCallout variant="info" title="SimpleList is not connected">
+          {result.message}
+        </BrewmoteStateCallout>
+      </section>
+    );
+  }
+
   if (result.status === "error") {
     return (
       <section className="panel-block admin-section" aria-labelledby="sl-users-heading">
