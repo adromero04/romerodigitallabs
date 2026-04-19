@@ -3,6 +3,7 @@ import "server-only";
 import { getRecentBrewmoteUsers as brewmoteRecent, getUserSignupTrend as brewmoteUserSignupTrend } from "@/lib/supabase/brewmote-admin";
 import {
   getRecentUsers as simpleListRecent,
+  getSimpleListSupabaseHost,
   getUserSignupTrend as simpleListUserSignupTrend,
   isSimpleListIntegrationConfigured,
   SIMPLELIST_DISABLED_LABEL,
@@ -24,6 +25,8 @@ export type RecentSignupRow = {
 
 export type DashboardSnapshot = {
   simpleListIntegrationConfigured: boolean;
+  /** Set when SimpleList env is configured; safe hostname only. */
+  simpleListSupabaseHost: string | null;
   brewmoteUsers: CountResult;
   simpleListUsers: CountResult;
   brewmoteUserTrend: UserTrendResult;
@@ -81,6 +84,7 @@ export async function getDashboardSnapshot(): Promise<DashboardSnapshot> {
 
     return {
       simpleListIntegrationConfigured: false,
+      simpleListSupabaseHost: null,
       brewmoteUsers,
       simpleListUsers,
       brewmoteUserTrend,
@@ -140,6 +144,7 @@ export async function getDashboardSnapshot(): Promise<DashboardSnapshot> {
 
   return {
     simpleListIntegrationConfigured: true,
+    simpleListSupabaseHost: getSimpleListSupabaseHost(),
     brewmoteUsers,
     simpleListUsers,
     brewmoteUserTrend,
