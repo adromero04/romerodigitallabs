@@ -18,18 +18,6 @@ export function isSimpleListIntegrationConfigured(): boolean {
   return Boolean(url && key);
 }
 
-/** Host from `SIMPLELIST_SUPABASE_URL` for status UI (no keys). */
-export function getSimpleListSupabaseHost(): string | null {
-  const raw = process.env.SIMPLELIST_SUPABASE_URL?.trim();
-  if (!raw) return null;
-  try {
-    const host = new URL(raw).host;
-    return host || null;
-  } catch {
-    return null;
-  }
-}
-
 /** Short copy for stat cards and sparkline fallbacks when SimpleList is disabled. */
 export const SIMPLELIST_DISABLED_LABEL =
   "SimpleList is not configured (set SIMPLELIST_SUPABASE_URL and SIMPLELIST_SUPABASE_SERVICE_ROLE_KEY to enable).";

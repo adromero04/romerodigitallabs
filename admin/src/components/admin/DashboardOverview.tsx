@@ -12,7 +12,6 @@ type Props = { snapshot: DashboardSnapshot };
 export function DashboardOverview({ snapshot }: Props) {
   const {
     simpleListIntegrationConfigured,
-    simpleListSupabaseHost,
     brewmoteUsers,
     simpleListUsers,
     brewmoteUserTrend,
@@ -40,42 +39,6 @@ export function DashboardOverview({ snapshot }: Props) {
             : "Brewmote totals and trends; SimpleList is not configured on this server."}
         </p>
       </header>
-
-      {simpleListIntegrationConfigured ? (
-        <section className="admin-section panel-block" aria-labelledby="simplelist-admin-heading">
-          <h2 id="simplelist-admin-heading" className="admin-section-title">
-            SimpleList Supabase admin
-          </h2>
-          <p className="muted admin-section-desc">
-            Service role client on the server only (<code className="admin-code">persistSession: false</code>). This is
-            the admin session your dashboard uses for SimpleList auth and metrics — keys never go to the browser.
-          </p>
-          <ul className="settings-list muted" style={{ marginBottom: 0 }}>
-            <li>
-              Project host:{" "}
-              <code className="admin-code">{simpleListSupabaseHost ?? "— (check SIMPLELIST_SUPABASE_URL)"}</code>
-            </li>
-            <li>
-              Status:{" "}
-              {simpleListUsers.ok ? (
-                <span className="muted">Connected — directory data loaded for this page.</span>
-              ) : (
-                <span className="stat-card__err">{simpleListUsers.message}</span>
-              )}
-            </li>
-            <li>
-              API health:{" "}
-              <Link href="/api/admin/simplelist/health" className="admin-inline-link">
-                /api/admin/simplelist/health
-              </Link>
-              {" · "}
-              <Link href="/admin/simplelist" className="admin-inline-link">
-                SimpleList workspace
-              </Link>
-            </li>
-          </ul>
-        </section>
-      ) : null}
 
       <section className="admin-section" aria-labelledby="stats-heading">
         <h2 id="stats-heading" className="admin-section-title">
