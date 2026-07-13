@@ -53,8 +53,11 @@ export function AppShell({ title, subtitle, userLabel, navItems, children }: App
         aria-label="Main navigation"
       >
         <Link href="/" className="app-sidebar-brand" onClick={() => setOpen(false)}>
-          <Icon name="hub" size={22} />
-          <span>Romero Digital Labs</span>
+          <img
+            src="/img/logo-blk.png"
+            alt="Romero Digital Labs"
+            className="app-sidebar-logo"
+          />
         </Link>
         <nav className="app-nav" aria-label="Primary">
           {navItems.map((item) => (

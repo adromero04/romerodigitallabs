@@ -1,25 +1,50 @@
-import { createClient } from "@/lib/supabase/server";
-import { NextResponse } from "next/server";
+import { createServerClient } from "@supabase/ssr";
+import { NextResponse, type NextRequest } from "next/server";
 
 /**
- * Handles OAuth / magic-link / invite / recovery code exchange.
- * Configure this URL in Supabase Auth redirect allow list:
+ * Handles invite / recovery / magic-link code exchange.
+ * Allow-list in Supabase Auth:
  *   http://localhost:3020/auth/callback
  *   https://portal.romerodigitallabs.com/auth/callback
  */
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/accept-invite";
+  const nextParam = searchParams.get("next");
+  const safeNext =
+    nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//")
+      ? nextParam
+      : "/dashboard";
 
   if (code) {
-    const supabase = await createClient();
+    // Write session cookies onto the redirect response (required for recovery/invite).
+    const redirectUrl = new URL(safeNext, origin);
+    const successResponse = NextResponse.redirect(redirectUrl);
+
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll();
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              successResponse.cookies.set(name, value, options);
+            });
+          },
+        },
+      },
+    );
+
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      const safeNext = next.startsWith("/") && !next.startsWith("//") ? next : "/dashboard";
-      return NextResponse.redirect(`${origin}${safeNext}`);
+      return successResponse;
     }
   }
 
-  return NextResponse.redirect(`${origin}/login?error=auth`);
+  const loginUrl = new URL("/login", origin);
+  loginUrl.searchParams.set("error", "auth");
+  return NextResponse.redirect(loginUrl);
 }

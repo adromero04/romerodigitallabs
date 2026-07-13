@@ -18,10 +18,21 @@ export function LoginForm() {
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(
-    searchParams.get("error") === "inactive"
-      ? "Your account is inactive. Contact Romero Digital Labs for help."
-      : null,
+  const [error, setError] = useState<string | null>(() => {
+    const err = searchParams.get("error");
+    if (err === "inactive") {
+      return "Your account is inactive. Contact Romero Digital Labs for help.";
+    }
+    if (err === "auth") {
+      return "That sign-in or reset link is invalid or expired. Try again, or request a new password reset.";
+    }
+    if (searchParams.get("reset") === "1") {
+      return null;
+    }
+    return null;
+  });
+  const [info] = useState<string | null>(() =>
+    searchParams.get("reset") === "1" ? "Password updated. You can sign in with your new password." : null,
   );
   const [loading, setLoading] = useState(false);
 
@@ -73,6 +84,11 @@ export function LoginForm() {
 
   return (
     <form onSubmit={onSubmit} noValidate>
+      {info ? (
+        <div className="alert alert-success" role="status">
+          {info}
+        </div>
+      ) : null}
       {error ? (
         <div className="alert alert-error" role="alert">
           {error}

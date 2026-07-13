@@ -206,7 +206,7 @@ export default async function DashboardPage() {
             )}
           </div>
 
-          <div className="panel" style={{ borderColor: "rgba(43,212,255,0.2)" }}>
+          <div className="panel" style={{ borderColor: "rgba(24,104,177,0.25)" }}>
             <h3 className="section-title">Need help?</h3>
             <p className="muted">Need help or want to request an update?</p>
             <Link className="btn" href="/support">

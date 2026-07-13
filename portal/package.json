@@ -5,10 +5,13 @@
   "scripts": {
     "dev": "next dev --port 3020",
     "build": "next build",
-    "start": "next start --port ${PORT:-3020}",
+    "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
     "test:watch": "vitest"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",

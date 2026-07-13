@@ -30,12 +30,46 @@ Official Hostinger flow: [Deploy a Node.js website](https://www.hostinger.com/su
 |---------|--------|
 | Install | `npm ci` |
 | Build | `npm run build` |
-| Start | `npm run start` |
+| Start | `npm run start -- -p $PORT` |
 | Node.js | `20` (or newer LTS) |
 
-`npm run start` already uses Hostinger’s `$PORT` when present.
+Do **not** use a plain `npm start` without `-p $PORT` on Hostinger — the platform assigns the port via `$PORT`.
 
-7. Add environment variables (below), then Deploy.
+## 500 Internal Server Error (after “Deployment completed”)
+
+The ZIP uploaded, but the Node process is failing. Check these in order:
+
+### 1. Environment variables (most common)
+
+In the Hostinger Node app → **Environment variables**, set **all** of:
+
+```text
+NEXT_PUBLIC_APP_URL=https://portal.romerodigitallabs.com
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+```
+
+Then **Redeploy / Restart** the app. Missing Supabase vars often cause a 500 on every page (middleware).
+
+### 2. Build + start commands
+
+Confirm exactly:
+
+- Install: `npm ci`
+- Build: `npm run build`
+- Start: `npm run start -- -p $PORT`
+- Node: `20`
+
+Open **Build logs**. You want to see `Compiled successfully` / `✓ Compiled`. If build failed, `next start` will 500.
+
+### 3. Runtime / error logs
+
+In hPanel for this website, open **Logs** (or Runtime / Error logs). The real crash line is there (missing module, env, port, etc.).
+
+### 4. Re-upload after start-script fix
+
+If you uploaded an older zip, rebuild the zip from the latest `portal/` (start script is now Hostinger-safe) and redeploy.
 
 ### Option B — ZIP / file upload
 
@@ -68,7 +102,9 @@ In Supabase → Authentication → URL configuration:
   - `https://portal.romerodigitallabs.com/auth/callback`
   - `https://portal.romerodigitallabs.com/reset-password`
   - `https://portal.romerodigitallabs.com/accept-invite`
+  - Local: `http://localhost:3020/auth/callback` (and `/reset-password`, `/accept-invite`)
 
+Password reset uses `/auth/callback?next=/reset-password`. If `/auth/callback` is missing from the allow list, Supabase sends users to Site URL / login instead.
 ## DNS
 
 If Hostinger already manages `romerodigitallabs.com`, adding the website/subdomain in hPanel usually creates the DNS for you. Otherwise add the `portal` record Hostinger shows for that website.

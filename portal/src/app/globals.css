@@ -1,26 +1,30 @@
 :root {
-  --bg: #0d151d;
-  --bg-elevated: #0f1620;
-  --card: #101a27;
-  --text: #e9eef5;
-  --muted: #a9b4c1;
-  --line: rgba(255, 255, 255, 0.08);
+  --bg: #f3f6fa;
+  --bg-elevated: #e8eef5;
+  --card: #ffffff;
+  --text: #15202b;
+  --muted: #5e6b7a;
+  --line: rgba(21, 32, 43, 0.1);
   --neutral: #d5d3d4;
   --primary: #1868b1;
-  --primary-hover: #1a74c4;
-  --secondary: #599cb9;
+  --primary-hover: #155a9a;
+  --secondary: #3d7fa0;
   --slate: #5e6474;
   --warm: #4c423d;
-  --accent: #2bd4ff;
+  --accent: #0b8fb8;
   --accent2: #1b5cff;
-  --accent-glow: rgba(24, 104, 177, 0.2);
-  --success: #3dbe8c;
-  --warning: #e0a84a;
-  --danger: #e05a5a;
+  --accent-glow: rgba(24, 104, 177, 0.16);
+  --success: #1f9d6c;
+  --warning: #c4821c;
+  --danger: #c93d3d;
   --sidebar-width: 260px;
   --header-h: 56px;
   --radius: 12px;
   --radius-lg: 16px;
+  --surface: rgba(255, 255, 255, 0.86);
+  --surface-strong: #ffffff;
+  --hover-fill: rgba(24, 104, 177, 0.06);
+  --shadow-soft: 0 10px 28px rgba(21, 32, 43, 0.06);
 }
 
 .nav-icon {
@@ -57,8 +61,8 @@ body {
 
 body {
   background:
-    radial-gradient(1100px 500px at 15% 0%, rgba(24, 104, 177, 0.14), transparent 60%),
-    radial-gradient(900px 450px at 85% 8%, rgba(89, 156, 185, 0.1), transparent 55%),
+    radial-gradient(1100px 500px at 15% 0%, rgba(24, 104, 177, 0.1), transparent 60%),
+    radial-gradient(900px 450px at 85% 8%, rgba(89, 156, 185, 0.08), transparent 55%),
     linear-gradient(180deg, var(--bg), var(--bg-elevated));
   background-attachment: fixed;
 }
@@ -77,7 +81,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
 
@@ -103,9 +107,9 @@ textarea:focus-visible {
   border-radius: var(--radius);
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.04),
-    rgba(255, 255, 255, 0.08),
-    rgba(255, 255, 255, 0.04)
+    rgba(21, 32, 43, 0.04),
+    rgba(21, 32, 43, 0.08),
+    rgba(21, 32, 43, 0.04)
   );
   background-size: 200% 100%;
   animation: skeleton-shine 1.4s ease-in-out infinite;
@@ -155,14 +159,14 @@ textarea:focus-visible {
 }
 
 .btn-ghost {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--surface-strong);
   border: 1px solid var(--line);
   color: var(--text);
   box-shadow: none;
 }
 
 .btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--hover-fill);
   color: var(--text);
 }
 
@@ -177,10 +181,11 @@ textarea:focus-visible {
 }
 
 .panel {
-  background: rgba(16, 26, 39, 0.7);
+  background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-soft);
 }
 
 .badge {
@@ -192,7 +197,7 @@ textarea:focus-visible {
   font-size: 0.75rem;
   font-weight: 600;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(21, 32, 43, 0.04);
   color: var(--muted);
   text-transform: capitalize;
 }
@@ -241,7 +246,7 @@ textarea:focus-visible {
 
 .form-field .error {
   font-size: 0.82rem;
-  color: #ffb4b4;
+  color: var(--danger);
 }
 
 .form-grid {
@@ -266,7 +271,7 @@ textarea:focus-visible {
 
 .form-control {
   width: 100%;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-strong);
   border: 1px solid var(--line);
   color: var(--text);
   border-radius: 10px;
@@ -275,14 +280,18 @@ textarea:focus-visible {
 }
 
 .form-control:focus {
-  border-color: rgba(43, 212, 255, 0.35);
-  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(24, 104, 177, 0.45);
+  background: var(--surface-strong);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(43, 212, 255, 0.12);
+  box-shadow: 0 0 0 3px rgba(24, 104, 177, 0.12);
 }
 
 .form-control::placeholder {
-  color: rgba(169, 180, 193, 0.65);
+  color: rgba(94, 107, 122, 0.7);
+}
+
+select.form-control {
+  background-color: var(--surface-strong);
 }
 
 .alert {
@@ -293,21 +302,21 @@ textarea:focus-visible {
 }
 
 .alert-error {
-  background: rgba(255, 80, 80, 0.08);
-  border: 1px solid rgba(255, 80, 80, 0.25);
-  color: #ffb4b4;
+  background: rgba(201, 61, 61, 0.08);
+  border: 1px solid rgba(201, 61, 61, 0.22);
+  color: #8f2424;
 }
 
 .alert-success {
-  background: rgba(61, 190, 140, 0.1);
-  border: 1px solid rgba(61, 190, 140, 0.25);
-  color: var(--text);
+  background: rgba(31, 157, 108, 0.1);
+  border: 1px solid rgba(31, 157, 108, 0.22);
+  color: #146647;
 }
 
 .alert-info {
-  background: rgba(43, 212, 255, 0.08);
-  border: 1px solid rgba(43, 212, 255, 0.22);
-  color: var(--text);
+  background: rgba(24, 104, 177, 0.08);
+  border: 1px solid rgba(24, 104, 177, 0.2);
+  color: #0f4e86;
 }
 
 /* Auth layout */
@@ -331,9 +340,13 @@ textarea:focus-visible {
   margin-bottom: 1.5rem;
 }
 
-.auth-brand img {
+.auth-brand img,
+.auth-brand-logo {
   height: 40px;
   width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .auth-card h1 {
@@ -363,7 +376,7 @@ textarea:focus-visible {
   width: var(--sidebar-width);
   flex-shrink: 0;
   border-right: 1px solid var(--line);
-  background: rgba(11, 15, 20, 0.75);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
   padding: 1.25rem 1rem;
   display: flex;
@@ -378,9 +391,17 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   gap: 0.7rem;
-  padding: 0.35rem 0.65rem;
+  padding: 0.2rem 0.4rem;
   color: var(--text);
   text-decoration: none;
+}
+
+.app-sidebar-logo {
+  display: block;
+  height: 36px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
 }
 
 .app-sidebar-brand .nav-icon {
@@ -421,17 +442,17 @@ textarea:focus-visible {
 
 .app-nav a:hover,
 .app-nav a[aria-current="page"] {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--hover-fill);
   color: var(--text);
 }
 
 .app-nav a[aria-current="page"] {
-  border-color: rgba(43, 212, 255, 0.18);
-  background: rgba(24, 104, 177, 0.14);
+  border-color: rgba(24, 104, 177, 0.22);
+  background: rgba(24, 104, 177, 0.1);
 }
 
 .app-nav a[aria-current="page"] .nav-icon {
-  color: var(--accent);
+  color: var(--primary);
   opacity: 1;
 }
 
@@ -460,7 +481,7 @@ textarea:focus-visible {
   gap: 1rem;
   padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--line);
-  background: rgba(11, 15, 20, 0.45);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
@@ -527,7 +548,7 @@ textarea:focus-visible {
     display: block;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(21, 32, 43, 0.35);
     z-index: 30;
   }
 
@@ -579,7 +600,7 @@ textarea:focus-visible {
 }
 
 .skeleton {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+  background: linear-gradient(90deg, rgba(21, 32, 43, 0.04), rgba(21, 32, 43, 0.08), rgba(21, 32, 43, 0.04));
   background-size: 200% 100%;
   animation: shimmer 1.2s ease-in-out infinite;
   border-radius: 8px;
@@ -666,6 +687,16 @@ textarea:focus-visible {
   gap: 0.75rem;
   padding: 0.9rem 0;
   border-bottom: 1px solid var(--line);
+  color: inherit;
+  text-decoration: none;
+}
+
+a.list-row:hover {
+  color: inherit;
+}
+
+a.list-row:hover > div:first-child {
+  color: var(--primary);
 }
 
 .list-row:last-child {
@@ -681,7 +712,7 @@ textarea:focus-visible {
   position: relative;
   height: 0.65rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(21, 32, 43, 0.08);
   overflow: hidden;
   margin: 0.65rem 0 0.35rem;
 }
@@ -723,7 +754,11 @@ textarea:focus-visible {
 .project-tab:hover,
 .project-tab.is-active {
   color: var(--text);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--hover-fill);
+}
+
+.project-tab.is-active {
+  color: var(--primary);
 }
 
 .timeline {
@@ -772,8 +807,8 @@ textarea:focus-visible {
 
 .timeline-dot.is-current {
   background: var(--primary);
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(43, 212, 255, 0.12);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(24, 104, 177, 0.14);
 }
 
 .timeline-dot.is-waiting {
@@ -816,13 +851,13 @@ textarea:focus-visible {
   padding: 0.75rem 0.9rem;
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--surface-strong);
   cursor: pointer;
 }
 
 .radio-option:has(input:checked) {
-  border-color: rgba(43, 212, 255, 0.35);
-  background: rgba(43, 212, 255, 0.06);
+  border-color: rgba(24, 104, 177, 0.35);
+  background: rgba(24, 104, 177, 0.08);
 }
 
 @media (max-width: 1000px) {
