@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Products | Romero Digital Labs</title>
+  <meta name="description" content="Products and projects from Romero Digital Labs — Brewmote, Simple List App, MoneyDash, DR1VN, and client work.">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/favicons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicons/favicon-16x16.png">
+  <link rel="manifest" href="img/favicons/site.webmanifest">
+
+  <style>
+    :root{
+      --bg:#0b0f14;
+      --bg2:#0f1620;
+      --card:#101a27;
+      --text:#e9eef5;
+      --muted:#a9b4c1;
+      --line: rgba(255,255,255,.08);
+      --accent:#2bd4ff;
+      --accent2:#1b5cff;
+    }
+    html,body{height:100%;}
+    body{
+      background: radial-gradient(1100px 500px at 15% 0%, rgba(43,212,255,.12), transparent 60%),
+                  radial-gradient(900px 450px at 85% 10%, rgba(27,92,255,.12), transparent 60%),
+                  linear-gradient(180deg, var(--bg), var(--bg2));
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+    .navbar{
+      backdrop-filter: blur(10px);
+      background: rgba(11,15,20,.55);
+      border-bottom: 1px solid var(--line);
+    }
+    .brand-mark{width:200px;display:inline-block;}
+    .nav-link{color:var(--muted)!important;}
+    .nav-link:hover,.nav-link.active{color:var(--text)!important;}
+    .page-hero{padding:5.5rem 0 2rem;}
+    .kicker{color:var(--muted);letter-spacing:.14em;text-transform:uppercase;font-size:.82rem;}
+    .display-5{letter-spacing:-0.02em;}
+    .lead{color:var(--muted);}
+    .btn-accent{background:#0060b3;border:0;color:#fff;font-weight:700;box-shadow:0 12px 30px rgba(43,212,255,.14);}
+    .btn-accent:hover{filter:brightness(1.05);color:#fff;}
+    .panel{background:rgba(16,26,39,.55);border:1px solid var(--line);border-radius:16px;}
+    .divider{border-top:1px solid var(--line);}
+    .small-muted{color:var(--muted);font-size:.95rem;}
+    .section{padding:3.5rem 0;}
+    .footer{padding:2.5rem 0 3rem;color:var(--muted);border-top:1px solid var(--line);}
+    a{color:var(--text);}
+    a:hover{color:#fff;}
+    .app-preview-img{
+      width:100%;height:auto;border-radius:8px;display:block;margin:0 auto;
+      image-orientation:from-image;max-width:100%;object-fit:contain;
+    }
+    @media (max-width:991px){.app-preview-img{transform:none;writing-mode:horizontal-tb;}}
+    .contact-form label{display:block;font-size:.9rem;font-weight:600;margin-bottom:.35rem;color:var(--text);}
+    .contact-form .form-hint{font-size:.82rem;color:var(--muted);margin-top:.25rem;}
+    .contact-form .form-control,.contact-form .form-select{
+      background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--text);
+      border-radius:10px;padding:.7rem .85rem;
+    }
+    .contact-form .form-control:focus,.contact-form .form-select:focus{
+      background:rgba(255,255,255,.06);border-color:rgba(43,212,255,.35);color:var(--text);
+      box-shadow:0 0 0 3px rgba(43,212,255,.12);
+    }
+    .contact-form .form-control::placeholder{color:rgba(169,180,193,.65);}
+    .contact-form .form-select option{background:var(--card);color:var(--text);}
+    .contact-form .hp-field{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;}
+    .form-status{display:none;border-radius:12px;padding:.85rem 1rem;font-size:.95rem;}
+    .form-status.is-visible{display:block;}
+    .form-status.success{background:rgba(43,212,255,.1);border:1px solid rgba(43,212,255,.25);color:var(--text);}
+    .form-status.error{background:rgba(255,80,80,.08);border:1px solid rgba(255,80,80,.25);color:#ffb4b4;}
+    .contact-alt{font-size:.9rem;color:var(--muted);}
+    .contact-alt a{color:var(--accent);}
+    .contact-alt a:hover{color:#fff;}
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container py-2">
+      <a class="navbar-brand d-flex align-items-center gap-2 text-white text-decoration-none" href="index.html">
+        <img class="brand-mark" src="img/logo-color-remake.png" alt="Romero Digital Labs logo mark">
+      </a>
+      <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="filter:invert(1) opacity(.85);"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="nav">
+        <div class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="index.html#web-services">Web Services</a>
+          <a class="nav-link active" href="products.html" aria-current="page">Products</a>
+          <a class="nav-link" href="#contact">Contact</a>
+          <a class="nav-link" href="https://portal.romerodigitallabs.com/login">Client Login</a>
+          <a class="btn btn-sm btn-accent ms-lg-2" href="#contact">Get in touch</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-hero">
+    <div class="container">
+      <div class="kicker mb-3">Romero Digital Labs</div>
+      <h1 class="display-5 fw-bold mb-3">Products</h1>
+      <p class="lead mb-0">A simple launch page today. A growing studio tomorrow.</p>
+    </div>
+  </header>
+
+  <section class="section pt-0">
+    <div class="container">
+      <div class="row g-3 mb-5">
+        <div class="col-lg-6">
+          <div class="panel p-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <div class="fw-semibold">Recent Project</div>
+              <a href="https://brewmote.com" target="_blank" class="small-muted">brewmote.com</a>
+            </div>
+            <div class="divider mb-3"></div>
+            <div class="d-flex gap-3 align-items-start">
+              <div style="min-width:50px;">
+                <img src="img/brewmote-icon.png" alt="" style="width:50px;border-radius:12px;padding:4px;background-color:#fff;">
+              </div>
+              <div>
+                <div class="fw-semibold">Brewmote</div>
+                <div class="small-muted">A work‑friendly café discovery experience for remote and hybrid life.<br><br></div>
+                <div class="mt-3 d-flex gap-2 flex-wrap">
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Discovery</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Maps</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Ratings</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Pro tier</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 mb-3">
+              <img src="img/brewmote-example.png" alt="Brewmote app screenshot" style="width:100%;border-radius:8px;display:block;margin:0 auto;">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="panel p-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <div class="fw-semibold">Recent project</div>
+              <a href="https://simplelistapp.com/" target="_blank" class="small-muted">simpelistapp.com</a>
+            </div>
+            <div class="divider mb-3"></div>
+            <div class="d-flex gap-3 align-items-start">
+              <div style="min-width:50px;">
+                <img src="img/simplelistapp-icon512.png" alt="" style="width:50px;border-radius:12px;padding:4px;background-color:#fff;">
+              </div>
+              <div>
+                <div class="fw-semibold">Simple List App</div>
+                <div class="small-muted">A clean, distraction-free task and list manager designed to help you stay focused and get things done—without the bloat.</div>
+                <div class="mt-3 d-flex gap-2 flex-wrap">
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Lists</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Tasks</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Focus</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Minimal UI</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 mb-3">
+              <img src="img/simplelistapp-preview.png" alt="Simple List App screenshot" class="app-preview-img">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="panel p-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <div class="fw-semibold">Recent project</div>
+              <a href="https://romerodigitallabs.com/moneydash/" target="_blank" class="small-muted">Launch App</a>
+            </div>
+            <div class="divider mb-3"></div>
+            <div class="d-flex gap-3 align-items-start">
+              <div style="min-width:50px;">
+                <img src="img/moneydash-icon-example.png" alt="" style="width:50px;border-radius:12px;padding:4px;background-color:#fff;">
+              </div>
+              <div>
+                <div class="fw-semibold">MoneyDash</div>
+                <div class="small-muted">A personal finance dashboard for tracking your income, expenses, and savings.</div>
+                <div class="mt-3 d-flex gap-2 flex-wrap">
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Income</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Expenses</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Savings</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Debts</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Subscriptions</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Insights</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 mb-3">
+              <img src="img/moneydash-example.png" alt="MoneyDash app screenshot" style="width:100%;border-radius:8px;display:block;margin:0 auto;">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="panel p-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <div class="fw-semibold">Recent project</div>
+              <a href="first-class-collision/index.html" target="_blank" class="small-muted">View site</a>
+            </div>
+            <div class="divider mb-3"></div>
+            <div class="d-flex gap-3 align-items-start">
+              <div style="min-width:50px;">
+                <img src="first-class-collision/assets/firstClass-logo.png" alt="" style="width:50px;height:50px;border-radius:12px;padding:4px;background-color:#fff;object-fit:contain;">
+              </div>
+              <div>
+                <div class="fw-semibold">1st Class Collision</div>
+                <div class="small-muted">Auto body repair in Austin, TX — collision repair, paint, dent removal, frame work, and insurance claim support.</div>
+                <div class="mt-3 d-flex gap-2 flex-wrap">
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Collision repair</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Paint</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Dent removal</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Insurance claims</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 mb-3">
+              <img src="img/firstClass-example.png" alt="1st Class Collision website screenshot" style="width:100%;border-radius:8px;display:block;margin:0 auto;">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3 mt-0">
+        <div class="col-lg-6">
+          <div class="panel p-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <div class="fw-semibold">Recent project</div>
+              <a href="https://dr1vn.app" target="_blank" class="small-muted">dr1vn.app</a>
+            </div>
+            <div class="divider mb-3"></div>
+            <div class="d-flex gap-3 align-items-start">
+              <div style="min-width:50px;">
+                <img src="img/dr1vn-icon.png" alt="" style="width:50px;border-radius:12px;padding:2px;background-color:#fff;">
+              </div>
+              <div>
+                <div class="fw-semibold">DR1VN App</div>
+                <div class="small-muted">A personal finance dashboard for tracking your income, expenses, and savings.</div>
+                <div class="mt-3 d-flex gap-2 flex-wrap">
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Income</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Expenses</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Savings</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Debts</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Subscriptions</span>
+                  <span class="badge text-bg-dark border" style="border-color:var(--line)!important;">Insights</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 mb-3">
+              <img src="img/dr1vn-example.png" alt="DR1VN app screenshot" style="width:100%;border-radius:8px;display:block;margin:0 auto;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <div class="container">
+      <div class="panel p-4 p-md-5">
+        <div class="row g-4 g-lg-5">
+          <div class="col-lg-5">
+            <h2 class="fw-bold mb-2">Let’s connect</h2>
+            <p class="small-muted mb-4">
+              For partnerships, sponsorships, or consulting inquiries, reach out and tell me what you’re building.
+            </p>
+            <p class="contact-alt mb-0">
+              Prefer email? Reach out directly at
+              <a href="mailto:contact@romerodigitallabs.com">contact@romerodigitallabs.com</a>.
+            </p>
+          </div>
+          <div class="col-lg-7">
+            <form id="contactForm" class="contact-form" action="contact.php" method="post" novalidate>
+              <input type="hidden" name="_return" value="products.html#contact">
+              <div class="hp-field" aria-hidden="true">
+                <label for="_honey">Leave blank</label>
+                <input type="text" id="_honey" name="_honey" tabindex="-1" autocomplete="off">
+              </div>
+              <div id="formStatus" class="form-status mb-3" role="status" aria-live="polite"></div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="name">Name <span class="text-danger">*</span></label>
+                  <input class="form-control" type="text" id="name" name="name" required autocomplete="name" maxlength="120">
+                </div>
+                <div class="col-md-6">
+                  <label for="email">Email <span class="text-danger">*</span></label>
+                  <input class="form-control" type="email" id="email" name="email" required autocomplete="email" maxlength="254">
+                </div>
+                <div class="col-md-6">
+                  <label for="business">Business name</label>
+                  <input class="form-control" type="text" id="business" name="business" autocomplete="organization" maxlength="160">
+                </div>
+                <div class="col-md-6">
+                  <label for="phone">Phone</label>
+                  <input class="form-control" type="tel" id="phone" name="phone" autocomplete="tel" maxlength="40">
+                </div>
+                <div class="col-12">
+                  <label for="service">What are you looking for?</label>
+                  <select class="form-select" id="service" name="service">
+                    <option value="">Select a service (optional)</option>
+                    <option value="1-Page Starter Website">1-Page Starter Website</option>
+                    <option value="Website Refresh">Website Refresh</option>
+                    <option value="Custom Landing Page">Custom Landing Page</option>
+                    <option value="Small Business Website">Small Business Website</option>
+                    <option value="Monthly Website Care">Monthly Website Care</option>
+                    <option value="Partnership or consulting">Partnership or consulting</option>
+                    <option value="Not sure yet">Not sure yet</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label for="message">Tell me about your project <span class="text-danger">*</span></label>
+                  <textarea class="form-control" id="message" name="message" rows="5" required maxlength="5000" placeholder="What are you working on? How can I help?"></textarea>
+                </div>
+                <div class="col-12">
+                  <button class="btn btn-accent btn-lg" type="submit" id="contactSubmit">Send message</button>
+                  <p class="form-hint mt-2 mb-0">Your message will be sent to contact@romerodigitallabs.com.</p>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between gap-2">
+      <div class="d-flex align-items-center gap-2">
+        <img src="img/icon-color.png" alt="" style="width:20px;">
+        <span>© <span id="y"></span> Romero Digital Labs</span>
+      </div>
+      <a class="small-muted text-decoration-none" href="index.html">Back to home</a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+    (function () {
+      var form = document.getElementById('contactForm');
+      var status = document.getElementById('formStatus');
+      var submitBtn = document.getElementById('contactSubmit');
+      if (!form || !status || !submitBtn) return;
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('sent') === '1') {
+        status.textContent = 'Thanks — your message was sent. I’ll get back to you soon.';
+        status.className = 'form-status mb-3 is-visible success';
+      } else if (params.get('error')) {
+        status.textContent = decodeURIComponent(params.get('error'));
+        status.className = 'form-status mb-3 is-visible error';
+      }
+      function showStatus(type, message) {
+        status.textContent = message;
+        status.className = 'form-status mb-3 is-visible ' + type;
+      }
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+        status.className = 'form-status mb-3';
+        fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } })
+          .then(function (response) { return response.json().then(function (data) { return { ok: response.ok, data: data }; }); })
+          .then(function (result) {
+            if (result.ok && result.data.ok) {
+              form.reset();
+              showStatus('success', 'Thanks — your message was sent. I’ll get back to you soon.');
+            } else {
+              showStatus('error', (result.data && result.data.error) || 'Something went wrong. Please try again or email contact@romerodigitallabs.com.');
+            }
+          })
+          .catch(function () {
+            showStatus('error', 'Unable to send right now. Please email contact@romerodigitallabs.com directly.');
+          })
+          .finally(function () {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send message';
+          });
+      });
+    })();
+  </script>
+</body>
+</html>

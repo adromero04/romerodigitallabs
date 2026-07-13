@@ -2,6 +2,10 @@
 
 Public marketing site and related subprojects. The main entry is `index.html`, deployed to Hostinger via FTPS (see `.github/workflows/deploy.yml`).
 
+## Client portal (`portal/`)
+
+Separate Next.js app for the client project hub (Supabase Auth + RLS). Intended for `portal.romerodigitallabs.com` on a Node host (e.g. Vercel). Excluded from Hostinger FTPS. See [`portal/README.md`](portal/README.md).
+
 ## Private admin dashboard (`admin/`)
 
 The marketing host is **static** (HTML/CSS/JS over FTP). A **separate** Next.js application in `admin/` provides a private `/admin` area that talks to **two remote Supabase projects** (Brewmote and SimpleList) using **server-side service role keys only**.

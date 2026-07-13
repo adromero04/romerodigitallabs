@@ -95,6 +95,11 @@
       border: 1px solid var(--line);
       border-radius: 16px;
       height: 100%;
+      transition: border-color .2s ease, transform .2s ease;
+    }
+    .cardx:hover{
+      border-color: rgba(43,212,255,.22);
+      transform: translateY(-2px);
     }
     .cardx h3{font-size: 1.1rem;}
     .divider{border-top: 1px solid var(--line);}
@@ -153,6 +158,117 @@
         writing-mode: horizontal-tb;
       }
     }
+
+    .contact-form label{
+      display:block;
+      font-size:.9rem;
+      font-weight:600;
+      margin-bottom:.35rem;
+      color:var(--text);
+    }
+    .contact-form .form-hint{
+      font-size:.82rem;
+      color:var(--muted);
+      margin-top:.25rem;
+    }
+    .contact-form .form-control,
+    .contact-form .form-select{
+      background:rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      color:var(--text);
+      border-radius:10px;
+      padding:.7rem .85rem;
+    }
+    .contact-form .form-control:focus,
+    .contact-form .form-select:focus{
+      background:rgba(255,255,255,.06);
+      border-color:rgba(43,212,255,.35);
+      color:var(--text);
+      box-shadow:0 0 0 3px rgba(43,212,255,.12);
+    }
+    .contact-form .form-control::placeholder{color:rgba(169,180,193,.65);}
+    .contact-form .form-select option{
+      background:var(--card);
+      color:var(--text);
+    }
+    .contact-form .hp-field{
+      position:absolute;
+      left:-10000px;
+      width:1px;
+      height:1px;
+      overflow:hidden;
+    }
+    .form-status{
+      display:none;
+      border-radius:12px;
+      padding:.85rem 1rem;
+      font-size:.95rem;
+    }
+    .form-status.is-visible{display:block;}
+    .form-status.success{
+      background:rgba(43,212,255,.1);
+      border:1px solid rgba(43,212,255,.25);
+      color:var(--text);
+    }
+    .form-status.error{
+      background:rgba(255,80,80,.08);
+      border:1px solid rgba(255,80,80,.25);
+      color:#ffb4b4;
+    }
+    .contact-alt{
+      font-size:.9rem;
+      color:var(--muted);
+    }
+    .contact-alt a{color:var(--accent);}
+    .contact-alt a:hover{color:#fff;}
+
+    .callout{
+      border-left:3px solid var(--accent);
+      padding:1rem 1.25rem;
+      background:rgba(43,212,255,.06);
+      border-radius:0 12px 12px 0;
+    }
+    .price-label{color:var(--muted);font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;}
+    .price-value{font-size:1.75rem;font-weight:700;letter-spacing:-0.02em;line-height:1.2;}
+    .feature-list{margin:0;padding-left:1.1rem;color:var(--muted);font-size:.95rem;}
+    .feature-list li{margin-bottom:.45rem;}
+    .best-for{margin-top:auto;padding-top:1rem;border-top:1px solid var(--line);font-size:.9rem;color:var(--muted);}
+    .best-for strong{color:var(--text);font-weight:600;}
+    .services-shell{background:rgba(16,26,39,.45);border:1px solid var(--line);border-radius:20px;padding:1.5rem;}
+    @media (min-width:768px){.services-shell{padding:2rem;}}
+    .services-group-label{display:flex;align-items:center;gap:.75rem;color:var(--muted);font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;}
+    .services-group-label::after{content:"";flex:1;height:1px;background:var(--line);}
+    .services-bridge{display:flex;align-items:center;gap:1rem;margin:1.75rem 0 1.25rem;color:var(--muted);font-size:.9rem;}
+    .services-bridge::before,.services-bridge::after{content:"";flex:1;height:1px;background:var(--line);}
+    .service-row{background:rgba(16,26,39,.75);border:1px solid rgba(43,212,255,.16);border-radius:16px;padding:1.5rem 1.75rem;}
+    @media (min-width:768px){.service-row{padding:1.75rem 2rem;}}
+    .service-row-header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:1rem 1.5rem;margin-bottom:1.25rem;}
+    .service-row-price{flex-shrink:0;}
+    @media (min-width:768px){.service-row-price{text-align:right;}}
+    .service-row-price .price-value{margin-bottom:0;}
+    .service-row-badge{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(43,212,255,.25);background:rgba(43,212,255,.08);padding:.25rem .55rem;border-radius:999px;margin-bottom:.6rem;}
+    .service-row-features{display:grid;grid-template-columns:1fr;gap:.4rem 1.25rem;margin:0;padding:0;list-style:none;color:var(--muted);font-size:.88rem;}
+    @media (min-width:576px){.service-row-features{grid-template-columns:1fr 1fr;}}
+    @media (min-width:992px){.service-row-features{grid-template-columns:1fr 1fr 1fr;}}
+    .service-row-features li{position:relative;padding-left:1rem;}
+    .service-row-features li::before{content:"";position:absolute;left:0;top:.55em;width:.35rem;height:.35rem;border-radius:999px;background:var(--accent);opacity:.75;}
+    .service-row-footer{margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--line);font-size:.9rem;color:var(--muted);}
+    .service-row-footer strong{color:var(--text);font-weight:600;}
+    .package-card .feature-list{font-size:.88rem;}
+    .package-card .feature-list li{margin-bottom:.35rem;}
+    .package-card .price-value{font-size:1.55rem;}
+    .addon-item{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--line);}
+    .addon-item:last-child{border-bottom:0;padding-bottom:0;}
+    .addon-item:first-child{padding-top:0;}
+    .addon-price{color:var(--accent);font-weight:600;white-space:nowrap;font-size:.95rem;}
+    .process-step{display:flex;gap:1rem;align-items:flex-start;height:100%;}
+    .step-num{flex-shrink:0;width:2.25rem;height:2.25rem;border-radius:999px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;background:linear-gradient(135deg, rgba(43,212,255,.18), rgba(27,92,255,.18));border:1px solid rgba(43,212,255,.25);color:var(--text);}
+    .accordion-item{background:rgba(16,26,39,.55);border:1px solid var(--line);color:var(--text);}
+    .accordion-item + .accordion-item{margin-top:.75rem;border-top:1px solid var(--line);}
+    .accordion-button{background:transparent;color:var(--text);font-weight:600;box-shadow:none!important;padding:1.1rem 1.25rem;}
+    .accordion-button:not(.collapsed){background:rgba(255,255,255,.03);color:var(--text);}
+    .accordion-button::after{filter:invert(1) opacity(.7);}
+    .accordion-body{color:var(--muted);padding:0 1.25rem 1.25rem;font-size:.95rem;}
   </style>
 </head>
 <body>
@@ -162,14 +278,16 @@
       <a class="navbar-brand d-flex align-items-center gap-2 text-white text-decoration-none" href="#">
         <img class="brand-mark" src="img/logo-color-remake.png" alt="Romero Digital Labs logo mark">
       </a>
-      <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-label="Toggle navigation" aria-controls="nav">
         <span class="navbar-toggler-icon" style="filter: invert(1) opacity(.85);"></span>
       </button>
       <div class="collapse navbar-collapse" id="nav">
         <div class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
           <a class="nav-link" href="#about">About</a>
-          <a class="nav-link" href="#products">Products</a>
+          <a class="nav-link" href="#web-services">Web Services</a>
+          <a class="nav-link" href="products.html">Products</a>
           <a class="nav-link" href="#contact">Contact</a>
+          <a class="nav-link" href="https://portal.romerodigitallabs.com/login">Client Login</a>
           <a class="btn btn-sm btn-accent ms-lg-2" href="#contact">Get in touch</a>
         </div>
       </div>
@@ -190,7 +308,7 @@
 
           <div class="d-flex gap-2 flex-wrap">
             <a class="btn btn-accent btn-lg" href="#contact">Start a conversation</a>
-            <a class="btn ghost btn-lg" href="#products">See what I’m building</a>
+            <a class="btn ghost btn-lg" href="products.html">See what I’m building</a>
           </div>
 
           <div class="d-flex gap-2 flex-wrap mt-4">
@@ -247,158 +365,300 @@
   </section>
 
   
-  <!-- PRODUCTS -->
-  <section id="products" class="section">
+
+  <div id="web-services">
+  <section class="section pt-0">
     <div class="container">
-      <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-4">
-        <div>
-          <h2 class="fw-bold mb-2">Products</h2>
-          <div class="small-muted">A simple launch page today. A growing studio tomorrow.</div>
-        </div>
-      </div>
-
-      <div class="row g-3 mb-5">
-        <div class="col-lg-6">
+      <div class="row g-4 align-items-start">
+        <div class="col-lg-12">
+          <h2 class="fw-bold mb-4">Web Services</h2>
+          <p class="small-muted mb-4">Simple, professional website design and development for local small businesses.</p>
+          <h3 class="h5 fw-bold mb-3">Practical help, not just a template</h3>
           <div class="panel p-4">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <div class="fw-semibold">Recent Project</div>
-              <a href="https://brewmote.com" target="_blank" class="small-muted">brewmote.com</a>
-            </div>
-            <div class="divider mb-3"></div>
-
-            <div class="d-flex gap-3 align-items-start">
-              <div style="min-width:50px;">
-                <img src="img/brewmote-icon.png" alt="" style="width:50px;border-radius:12px;padding: 4px;background-color: #fff;">
-              </div>
-              <div>
-                <div class="fw-semibold">Brewmote</div>
-                <div class="small-muted">A work‑friendly café discovery experience for remote and hybrid life.</div>
-                <div class="mt-3 d-flex gap-2 flex-wrap">
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Discovery</span>
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Maps</span>
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Ratings</span>
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Pro tier</span>
-                </div>
-                
-              </div>
-            </div>
-            <div class="mt-4 mb-3">
-              <img src="img/iPhone-13-PRO-MAX-brewmote.png" alt="Brewmote app screenshot" style="width:50%; border-radius:8px; display:block; margin:0 auto;">
+            <p class="small-muted mb-3">
+              AI tools can generate a website, but the real value is making sure the final site is clear, professional,
+              mobile-friendly, easy to use, and set up correctly. Romero Digital Labs uses modern tools, including
+              AI-assisted development, to work efficiently while still providing the design judgment, structure, and
+              polish that small businesses need.
+            </p>
+            <div class="callout mb-0">
+              <strong>AI can generate a website. I make sure it actually works for your business.</strong>
             </div>
           </div>
         </div>
-
-        <div class="col-lg-6">
-          <div class="panel p-4">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <div class="fw-semibold">Recent project</div>
-              <a href="https://simplelistapp.com/" target="_blank" class="small-muted">simpelistapp.com</a>
-            </div>
-            <div class="divider mb-3"></div>
-
-            <div class="d-flex gap-3 align-items-start">
-              <div style="min-width:50px;">
-                <img src="img/simplelistapp-icon512.png" alt="" style="width:50px;border-radius:12px;padding: 4px;background-color: #fff;">
-              </div>
-              <div>
-                <div class="fw-semibold">Simple List App</div>
-                <div class="small-muted">A clean, distraction-free task and list manager designed to help you stay focused and get things done—without the bloat.</div>
-                <div class="mt-3 d-flex gap-2 flex-wrap">
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Lists</span>
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Tasks</span>
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Focus</span>
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Minimal UI</span>
-                </div>
-                
-              </div>
-            </div>
-            <div class="mt-4 mb-3">
-              <img src="img/simplelistapp-preview.png" alt="Simple List App screenshot" class="app-preview-img">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="row g-3">
-        <div class="col-lg-6">
-          <div class="panel p-4">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <div class="fw-semibold">Now building</div>
-              <a href="https://romerodigitallabs.com/moneydash/" target="_blank" class="small-muted">Launch App</a>
-            </div>
-            <div class="divider mb-3"></div>
-
-            <div class="d-flex gap-3 align-items-start">
-              <div style="min-width:50px;">
-                <img src="img/moneydash-icon-example.png" alt="" style="width:50px;border-radius:12px;padding: 4px;background-color: #fff;">
-              </div>
-              <div>
-                <div class="fw-semibold">MoneyDash</div>
-                <div class="small-muted">A personal finance dashboard for tracking your income, expenses, and savings.</div>
-                <div class="mt-3 d-flex gap-2 flex-wrap">
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Income</span>
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Expenses</span>
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Savings</span>
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Debts</span>
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Subscriptions</span>
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Insights</span>
-                </div>
-              </div>
-            </div>
-            <div class="mt-4 mb-3">
-              <img src="img/moneydash-example.png" alt="Brewmote app screenshot" style="width:100%; border-radius:8px; display:block; margin:0 auto;">
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-6">
-          <div class="panel p-4">
-            <div class="d-flex align-items-center justify-content-between mb-3">
-              <div class="fw-semibold">Recent project</div>
-              <a href="first-class-collision/index.html" target="_blank" class="small-muted">View site</a>
-            </div>
-            <div class="divider mb-3"></div>
-
-            <div class="d-flex gap-3 align-items-start">
-              <div style="min-width:50px;">
-                <img src="first-class-collision/assets/firstClass-logo.png" alt="" style="width:50px;height:50px;border-radius:12px;padding:4px;background-color:#fff;object-fit:contain;">
-              </div>
-              <div>
-                <div class="fw-semibold">1st Class Collision</div>
-                <div class="small-muted">Auto body repair in Austin, TX — collision repair, paint, dent removal, frame work, and insurance claim support.</div>
-                <div class="mt-3 d-flex gap-2 flex-wrap">
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Collision repair</span>
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Paint</span>
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Dent removal</span>
-                  <span class="badge text-bg-dark border" style="border-color: var(--line)!important;">Insurance claims</span>
-                </div>
-              </div>
-            </div>
-            <div class="mt-4 mb-3">
-              <img src="img/firstClass-example.png" alt="1st Class Collision website screenshot" style="width:100%; border-radius:8px; display:block; margin:0 auto;">
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   </section>
 
+  <section class="section pt-0">
+    <div class="container">
+      <div class="mb-4">
+        <h2 class="fw-bold mb-2">Services &amp; pricing</h2>
+        <p class="small-muted mb-0">Straightforward options for businesses that need a professional website without the agency overhead.</p>
+      </div>
+
+      <div class="services-shell">
+        <div class="services-group-label">Website projects</div>
+        <div class="row g-3">
+          <div class="col-md-6 d-flex">
+            <article class="cardx package-card p-4 d-flex flex-column w-100">
+              <h3 class="h5 fw-bold mb-2">1-Page Starter Website</h3>
+              <div class="price-label mb-1">Starting at</div>
+              <div class="price-value mb-2">$350</div>
+              <p class="small-muted mb-3">A simple, professional website for businesses that need a basic online presence.</p>
+              <p class="fw-semibold mb-2">Includes:</p>
+              <ul class="feature-list mb-3">
+                <li>One-page responsive website</li>
+                <li>Business intro / hero section</li>
+                <li>Services or offerings section</li>
+                <li>About section</li>
+                <li>Contact information or contact form</li>
+                <li>Basic mobile optimization</li>
+                <li>Basic SEO title and description</li>
+                <li>Domain/hosting guidance if needed</li>
+              </ul>
+              <p class="best-for mb-0"><strong>Best for:</strong> Small businesses that need a simple website to look professional and give customers a place to learn more.</p>
+            </article>
+          </div>
+          <div class="col-md-6 d-flex">
+            <article class="cardx package-card p-4 d-flex flex-column w-100">
+              <h3 class="h5 fw-bold mb-2">Website Refresh</h3>
+              <div class="price-label mb-1">Starting at</div>
+              <div class="price-value mb-2">$600</div>
+              <p class="small-muted mb-3">For businesses that already have a website but need it cleaned up, modernized, or improved.</p>
+              <p class="fw-semibold mb-2">Includes:</p>
+              <ul class="feature-list mb-3">
+                <li>Homepage layout cleanup</li>
+                <li>Mobile/responsive improvements</li>
+                <li>Button, link, and contact flow improvements</li>
+                <li>Navigation cleanup</li>
+                <li>Image and content cleanup</li>
+                <li>Basic copy polish</li>
+                <li>Basic SEO review</li>
+                <li>One round of revisions</li>
+              </ul>
+              <p class="best-for mb-0"><strong>Best for:</strong> Businesses with an outdated, messy, or hard-to-use website that needs a more professional look.</p>
+            </article>
+          </div>
+          <div class="col-md-6 d-flex">
+            <article class="cardx package-card p-4 d-flex flex-column w-100">
+              <h3 class="h5 fw-bold mb-2">Custom Landing Page</h3>
+              <div class="price-label mb-1">Starting at</div>
+              <div class="price-value mb-2">$750</div>
+              <p class="small-muted mb-3">A focused page designed around one specific service, offer, event, product, or campaign.</p>
+              <p class="fw-semibold mb-2">Includes:</p>
+              <ul class="feature-list mb-3">
+                <li>Custom responsive landing page</li>
+                <li>Strong headline and call-to-action</li>
+                <li>Service, offer, or campaign details</li>
+                <li>Lead form or contact button</li>
+                <li>Trust-building sections such as reviews, FAQs, or benefits</li>
+                <li>Basic SEO and social sharing setup</li>
+                <li>One round of revisions</li>
+              </ul>
+              <p class="best-for mb-0"><strong>Best for:</strong> Businesses promoting a specific service, running ads, launching a new offer, or trying to generate leads.</p>
+            </article>
+          </div>
+          <div class="col-md-6 d-flex">
+            <article class="cardx package-card p-4 d-flex flex-column w-100">
+              <h3 class="h5 fw-bold mb-2">Small Business Website</h3>
+              <div class="price-label mb-1">Starting at</div>
+              <div class="price-value mb-2">$1,200</div>
+              <p class="small-muted mb-3">A more complete website for businesses that need multiple pages and a stronger online presence.</p>
+              <p class="fw-semibold mb-2">Includes:</p>
+              <ul class="feature-list mb-3">
+                <li>3–5 page responsive website</li>
+                <li>Home page</li>
+                <li>About page</li>
+                <li>Services page</li>
+                <li>Contact page</li>
+                <li>Additional page if needed</li>
+                <li>Contact form setup</li>
+                <li>Mobile optimization</li>
+                <li>Basic SEO setup</li>
+                <li>Basic content organization</li>
+                <li>One round of revisions</li>
+              </ul>
+              <p class="best-for mb-0"><strong>Best for:</strong> Businesses that need more than a single page and want a complete, professional website.</p>
+            </article>
+          </div>
+        </div>
+        <div class="services-bridge" aria-hidden="true">After your site launches</div>
+        <div class="services-group-label">Ongoing support</div>
+        <article class="service-row">
+          <div class="service-row-header">
+            <div>
+              <span class="service-row-badge">Monthly plan</span>
+              <h3 class="h5 fw-bold mb-2">Monthly Website Care</h3>
+              <p class="small-muted mb-0">Ongoing support for businesses that do not want to manage updates themselves.</p>
+            </div>
+            <div class="service-row-price">
+              <div class="price-label mb-1">Starting at</div>
+              <div class="price-value">$125<span style="font-size:1rem;font-weight:600;">/month</span></div>
+            </div>
+          </div>
+          <ul class="service-row-features" aria-label="Monthly Website Care includes">
+            <li>Small monthly content updates</li>
+            <li>Image or text changes</li>
+            <li>Broken link checks</li>
+            <li>Basic troubleshooting</li>
+            <li>Hosting/domain support</li>
+            <li>Minor design adjustments</li>
+            <li>Monthly website check-in</li>
+          </ul>
+          <p class="service-row-footer mb-0"><strong>Best for:</strong> Businesses that want help keeping their website updated without hiring someone full-time.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="container">
+      <h2 class="fw-bold mb-2">Additional Services</h2>
+      <p class="small-muted mb-4">Optional add-ons to help with setup, content, and launch details.</p>
+      <div class="panel p-4">
+        <div class="addon-item"><div class="fw-semibold">Domain and Hosting Setup</div><div class="addon-price">Starting at $100</div></div>
+        <div class="addon-item"><div class="fw-semibold">Basic SEO Cleanup</div><div class="addon-price">Starting at $150</div></div>
+        <div class="addon-item"><div class="fw-semibold">Contact Form Setup</div><div class="addon-price">Starting at $100</div></div>
+        <div class="addon-item"><div class="fw-semibold">Website Copy Cleanup</div><div class="addon-price">Starting at $150</div></div>
+        <div class="addon-item"><div class="fw-semibold">Extra Website Page</div><div class="addon-price">Starting at $200/page</div></div>
+        <div class="addon-item"><div class="fw-semibold">Rush Delivery</div><div class="addon-price">Available upon request</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="container">
+      <div class="mb-4">
+        <h2 class="fw-bold mb-2">How the Process Works</h2>
+        <p class="small-muted mb-0">A simple, clear path from first conversation to launch.</p>
+      </div>
+      <div class="row g-3">
+        <div class="col-md-6 col-lg-4"><div class="panel p-4 h-100"><div class="process-step"><div class="step-num" aria-hidden="true">1</div><div>We discuss what your business needs.</div></div></div></div>
+        <div class="col-md-6 col-lg-4"><div class="panel p-4 h-100"><div class="process-step"><div class="step-num" aria-hidden="true">2</div><div>I recommend the best option based on your goals.</div></div></div></div>
+        <div class="col-md-6 col-lg-4"><div class="panel p-4 h-100"><div class="process-step"><div class="step-num" aria-hidden="true">3</div><div>I collect your content, logo, images, and contact details.</div></div></div></div>
+        <div class="col-md-6 col-lg-4"><div class="panel p-4 h-100"><div class="process-step"><div class="step-num" aria-hidden="true">4</div><div>I design and build the website.</div></div></div></div>
+        <div class="col-md-6 col-lg-4"><div class="panel p-4 h-100"><div class="process-step"><div class="step-num" aria-hidden="true">5</div><div>You review it and request any final adjustments.</div></div></div></div>
+        <div class="col-md-6 col-lg-4"><div class="panel p-4 h-100"><div class="process-step"><div class="step-num" aria-hidden="true">6</div><div>The website is launched or handed off.</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="section pt-0">
+    <div class="container">
+      <h2 class="fw-bold mb-2">FAQs</h2>
+      <p class="small-muted mb-4">Common questions about websites, pricing, and how I work with small businesses.</p>
+      <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+          <h3 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="true" aria-controls="faq1">What is the difference between a starter website and a landing page?</button>
+          </h3>
+          <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">A starter website is your basic online presence — who you are, what you do, and how customers can contact you. A landing page is more focused. It promotes one specific service, offer, event, or campaign and is designed to get visitors to take action.</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">Do you use AI to build websites?</button>
+          </h3>
+          <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">Yes. I use modern AI-assisted tools to move faster and keep costs reasonable, but every site is still reviewed, refined, and customized by me. The value is not just generating a website — it is making sure the structure, design, mobile experience, copy, contact flow, and launch setup are done correctly.</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">Can you help with my existing website?</button>
+          </h3>
+          <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">Yes. If you already have a website, I can help clean it up, improve the layout, fix mobile issues, update content, improve contact flows, or modernize the overall look.</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">Do I need to already have hosting and a domain?</button>
+          </h3>
+          <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">No. If you do not already have hosting or a domain, I can help guide you through setup or handle the setup as an additional service.</div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h3 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">Can you maintain the website after it launches?</button>
+          </h3>
+          <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">Yes. Monthly website care plans are available for small updates, basic troubleshooting, content changes, and general website support.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
   <!-- CONTACT -->
   <section id="contact" class="section">
     <div class="container">
       <div class="panel p-4 p-md-5">
-        <div class="row g-4 align-items-center">
-          <div class="col-lg-8">
+        <div class="row g-4 g-lg-5">
+          <div class="col-lg-5">
             <h2 class="fw-bold mb-2">Let’s connect</h2>
-            <p class="small-muted mb-0">
+            <p class="small-muted mb-4">
               For partnerships, sponsorships, or consulting inquiries, reach out and tell me what you’re building.
             </p>
+            <p class="contact-alt mb-0">
+              Prefer email? Reach out directly at
+              <a href="mailto:contact@romerodigitallabs.com">contact@romerodigitallabs.com</a>.
+            </p>
           </div>
-          <div class="col-lg-4 text-lg-end">
-            <a class="btn btn-accent btn-lg w-100 w-lg-auto" href="mailto:hello@romerodigitallabs.com">
-              Email contact@romerodigitallabs.com
-            </a>
+          <div class="col-lg-7">
+            <form id="contactForm" class="contact-form" action="contact.php" method="post" novalidate>
+              <input type="hidden" name="_return" value="index.html#contact">
+              <div class="hp-field" aria-hidden="true">
+                <label for="_honey">Leave blank</label>
+                <input type="text" id="_honey" name="_honey" tabindex="-1" autocomplete="off">
+              </div>
+
+              <div id="formStatus" class="form-status mb-3" role="status" aria-live="polite"></div>
+
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="name">Name <span class="text-danger">*</span></label>
+                  <input class="form-control" type="text" id="name" name="name" required autocomplete="name" maxlength="120">
+                </div>
+                <div class="col-md-6">
+                  <label for="email">Email <span class="text-danger">*</span></label>
+                  <input class="form-control" type="email" id="email" name="email" required autocomplete="email" maxlength="254">
+                </div>
+                <div class="col-md-6">
+                  <label for="business">Business name</label>
+                  <input class="form-control" type="text" id="business" name="business" autocomplete="organization" maxlength="160">
+                </div>
+                <div class="col-md-6">
+                  <label for="phone">Phone</label>
+                  <input class="form-control" type="tel" id="phone" name="phone" autocomplete="tel" maxlength="40">
+                </div>
+                <div class="col-12">
+                  <label for="service">What are you looking for?</label>
+                  <select class="form-select" id="service" name="service">
+                    <option value="">Select a service (optional)</option>
+                    <option value="1-Page Starter Website">1-Page Starter Website</option>
+                    <option value="Website Refresh">Website Refresh</option>
+                    <option value="Custom Landing Page">Custom Landing Page</option>
+                    <option value="Small Business Website">Small Business Website</option>
+                    <option value="Monthly Website Care">Monthly Website Care</option>
+                    <option value="Partnership or consulting">Partnership or consulting</option>
+                    <option value="Not sure yet">Not sure yet</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label for="message">Tell me about your project <span class="text-danger">*</span></label>
+                  <textarea class="form-control" id="message" name="message" rows="5" required maxlength="5000" placeholder="What are you working on? How can I help?"></textarea>
+                </div>
+                <div class="col-12">
+                  <button class="btn btn-accent btn-lg" type="submit" id="contactSubmit">Send message</button>
+                  <p class="form-hint mt-2 mb-0">Your message will be sent to contact@romerodigitallabs.com.</p>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -418,6 +678,66 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     document.getElementById('y').textContent = new Date().getFullYear();
+
+    (function () {
+      var form = document.getElementById('contactForm');
+      var status = document.getElementById('formStatus');
+      var submitBtn = document.getElementById('contactSubmit');
+      if (!form || !status || !submitBtn) return;
+
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('sent') === '1') {
+        status.textContent = 'Thanks — your message was sent. I’ll get back to you soon.';
+        status.className = 'form-status mb-3 is-visible success';
+      } else if (params.get('error')) {
+        status.textContent = decodeURIComponent(params.get('error'));
+        status.className = 'form-status mb-3 is-visible error';
+      }
+
+      function showStatus(type, message) {
+        status.textContent = message;
+        status.className = 'form-status mb-3 is-visible ' + type;
+      }
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+        status.className = 'form-status mb-3';
+
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        })
+          .then(function (response) {
+            return response.json().then(function (data) {
+              return { ok: response.ok, data: data };
+            });
+          })
+          .then(function (result) {
+            if (result.ok && result.data.ok) {
+              form.reset();
+              showStatus('success', 'Thanks — your message was sent. I’ll get back to you soon.');
+            } else {
+              showStatus('error', (result.data && result.data.error) || 'Something went wrong. Please try again or email contact@romerodigitallabs.com.');
+            }
+          })
+          .catch(function () {
+            showStatus('error', 'Unable to send right now. Please email contact@romerodigitallabs.com directly.');
+          })
+          .finally(function () {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send message';
+          });
+      });
+    })();
   </script>
 </body>
 </html>
